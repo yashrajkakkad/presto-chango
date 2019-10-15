@@ -14,6 +14,7 @@ SAMPLING_RATE = 11025
 CUTOFF_FREQUENCY = 5000
 SAMPLES_PER_WINDOW = 1024
 
+
 def stereo_to_mono(audiodata):
     return audiodata.sum(axis=1) / 2
 
@@ -54,11 +55,13 @@ if __name__ == "__main__":
     filtered_data = butter_lowpass_filter(audio_data, CUTOFF_FREQUENCY, DEFAULT_SAMPLING_RATE)
 
     # Decimate by a factor of 4
-    decimated_data = decimate(filtered_data, DEFAULT_SAMPLING_RATE / SAMPLING_RATE)
+    decimated_data = decimate(filtered_data, DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
+    print(DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
     print(decimated_data)
-    second_len = len(audio_data)
-    print(len(audio_data))
-    assert (first_len / 4 == second_len)
+    first_len = len(decimated_data)
+    second_len = len(filtered_data)
+    print(len(filtered_data))
+    assert (first_len == second_len / 4)
 
     # Generate a hamming window function
     # sym=False since we're going for spectral analysis
@@ -74,7 +77,8 @@ if __name__ == "__main__":
     # plt.plot(windowed)
     # plt.show()
 
-    fft_data= fft(windowed)
+    fft_data = fft(windowed)
+    print(fft_data)
     plt.plot(fft_data)
     plt.show()
     # plt.plot(fft_demo)
