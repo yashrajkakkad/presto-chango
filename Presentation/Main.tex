@@ -1,11 +1,18 @@
 \documentclass{beamer}
 \usetheme{Frankfurt}
+\usepackage{amsfonts}
 
 \author{Yashraj Kakkad - AU1841036 \\
         Prayag Savsani - AU1841035 \\
-        Harshil Mehta - AU18410 \\
-        Yashil Depani - AU1841005}
+        Harshil Mehta - AU1841010 \\
+        Yashil Depani - AU1841005 \\
+        \vspace{8pt}Guided by: Prof. Ashok Ranade}
+
 \title{Music Identification through Audio Fingerprinting}
+
+\institute{Ahmedabad University}
+
+\date{\today}
 
 \begin{document}
 
@@ -26,9 +33,59 @@
 \begin{itemize}
     \item Music is typically sampled at 44100 kHz.
     \item This is because of a theorem by Nyquist and Shannon which requires \(f_{d} \ge 2f_{max}\).
-    \item Maximum frequency, in this case, of course is 20 kHz which leads our sampling rate to be 44100 kHz.
-    \item 
+    \item Maximum sound frequency is of course 20 kHz which leads our sampling rate to be 44100 kHz.
 \end{itemize}        
 \end{frame}
+
+
+\begin{frame}[t]
+    \frametitle{Problems with sampling rate}
+    \begin{itemize}
+        \item Performing Fast Fourier Transform on a few hundred songs takes days at such a high sampling rate.
+        \item Therefore we downsample the audio by a factor of 4. 
+        \item And as a result, the maximum sound frequency in our audio sample changes to 5 kHz. 
+        \item Would it cause any issues??
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{The song is not the same}   
+    \begin{itemize}
+        \item Turns out that the most important part of a song (to us) is below 5 kHz.
+        \item Therefore, for the sake of Fast Fourier Transform, we may simply ignore the higher frequencies.
+    \end{itemize}
+\end{frame}
+    
+\begin{frame}[t]
+    \frametitle{Aliasing}   
+    \begin{itemize}
+        \item We need to filter the higher frequencies in order to avoid aliasing.
+        \item \alert{Aliasing}: Distortion that results when a signal reconstructed from samples is different from the original continuous signal.
+        \item We achieve the same by filtering the signal before downsampling (using a low pass butterworth filter)
+        \item IMAGE OF A LOW PASS FILTER       
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Discrete Fourier Transform}
+    \begin{itemize}
+        \item Gives us the frequency spectrum.
+        \item Formula: 
+            \begin{align*}
+                X(n) = \sum_{k=0}^{N-1} x[k] e^{-j(2\pi kn/N)}
+            \end{align*}
+        \item To obtain frequencies of each small part of the song for spectral analysis, we have to apply DFT on each small part of the song by appropriately dividing the song.
+        \item This small part of the song can be seen as a window of N samples on which the DFT is performed.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Fast Fourier Transform}
+    \begin{itemize}
+        \item Discrete Fourier Transform requires \(\mathcal{O}(N^2)\) computations where N is the number of samples.
+        \item Today's Fast Fourier Transform implementations are \(\mathcal{O}(NlogN)\), which is a huge improvement.
+    \end{itemize}
+\end{frame}    
+
 
 \end{document}
