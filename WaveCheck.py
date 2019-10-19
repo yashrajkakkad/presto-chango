@@ -1,10 +1,14 @@
 from pydub import AudioSegment
-from scipy.signal import decimate, hamming, spectrogram, lfilter, butter
+from scipy.signal import decimate, hamming, spectrogram, lfilter, butter, filtfilt, resample
 from scipy.fftpack import fft
 import scipy.io.wavfile as wavfile
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 from skimage import util
+
+def stereo_to_mono(audiodata):
+    return audiodata.sum(axis=1) / 2
 
 def butter_lowpass(cutoff, fs, order=5):
     nyq = 0.5 * fs
@@ -14,42 +18,37 @@ def butter_lowpass(cutoff, fs, order=5):
 
 def butter_lowpass_filter(data, cutoff, fs, order=5):
     b, a = butter_lowpass(cutoff, fs, order=order)
-    y = lfilter(b, a, data)
+    y = filtfilt(b, a, data)
     return y
+    
+def downsample_signal(data, factor):
+    downsampled_data = decimate(data, factor)
+    return downsampled_data
 
-rate, audiodata = wavfile.read('new.wav')
+def generate_window(window_size):
+    return hamming(window_size, sym=False)
+
+def do_fft(data, window_size, window, sampling_rate):
+    fft_data = fft(data[:window_size]*window)
+    fft_freq = np.fft.fftfreq(window_size//2)
+    power = np.abs(fft_data[:window_size//2])
+    plt.plot(np.abs(fft_freq*sampling_rate), power)
+    plt.show()
+
+rate, audiodata = wavfile.read('modem.wav')
 print(rate)
 
-audiodata = audiodata.sum(axis=1)/2
+audiodata = stereo_to_mono(audiodata)
 
-window_size = 4096
-hamming_window = hamming(window_size, sym=False)
+audiodata = butter_lowpass_filter(audiodata, 5000, 44100)
 
-fft_data_orig = fft(audiodata[:4096]*hamming_window)
-fft_freq = np.fft.fftfreq(4096)
-power = np.abs(fft_data_orig[:2048])
-print(fft_freq.min(), fft_freq.max())
+audiodata = downsample_signal(audiodata, 4)
 
-tempdata = butter_lowpass_filter(audiodata, 500, 44100, order=8)
-audiodata = butter_lowpass_filter(audiodata, 500, 44100)
-
-audiodata = decimate(audiodata, 4)
-tempdata = decimate(tempdata, 4)
 window_size = 1024
-hamming_window = hamming(window_size, sym=False)
+hamming_window = generate_window(window_size)
 
-fft_data = fft(audiodata[:window_size]*hamming_window)
-fft_freq = np.fft.fftfreq(window_size//2)
-power = np.abs(fft_data[:window_size//2])
-print(fft_freq.min(), fft_freq.max())
-plt.plot(fft_freq[:window_size//2]*11025, power)
-# plt.show()
-
-fft_data = fft(tempdata[:window_size]*hamming_window)
-fft_freq = np.fft.fftfreq(window_size//2)
-power = np.abs(fft_data[:window_size//2])
-print(fft_freq.min(), fft_freq.max())
-plt.plot(fft_freq[:window_size//2]*11025, power)
+# sampling_rate = 11025
+# do_fft(audiodata, window_size, hamming_window, sampling_rate)
 
 # slices = util.view_as_windows(audiodata, window_shape=(window_size,), step=100)
 # slices = slices * hamming_window
@@ -72,10 +71,10 @@ plt.plot(fft_freq[:window_size//2]*11025, power)
 # ax.set_xlabel('Time [s]');
 
 # DO IT DIRECTLY
-# freqs, times, Sx = spectrogram(audiodata, fs=11025, window='hamming', nperseg=1024, detrend=False, scaling='spectrum')
-# f, ax = plt.subplots(figsize=(4.8, 2.4))
-# ax.pcolormesh(times, freqs / 1000, 10 * np.log10(Sx), cmap='viridis')
-# ax.set_ylabel('Frequency [kHz]')
-# ax.set_xlabel('Time [s]');
+freqs, times, Sx = spectrogram(audiodata, fs=11025, window='hamming', nperseg=1024, detrend=False, scaling='spectrum')
+f, ax = plt.subplots(figsize=(4.8, 2.4))
+ax.pcolormesh(times, freqs / 1000, 10 * np.log10(Sx), cmap='viridis')
+ax.set_ylabel('Frequency [kHz]')
+ax.set_xlabel('Time [s]');
 
 plt.show()
