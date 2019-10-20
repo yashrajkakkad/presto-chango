@@ -1,5 +1,5 @@
 from pydub import AudioSegment
-from scipy.signal import decimate, hamming, spectrogram, lfilter, butter, filtfilt, resample
+from scipy.signal import decimate, hamming, spectrogram, lfilter, butter, filtfilt, resample, freqs
 from scipy.fftpack import fft
 import scipy.io.wavfile as wavfile
 import matplotlib.pyplot as plt
@@ -35,17 +35,17 @@ def do_fft(data, window_size, window, sampling_rate):
     plt.plot(np.abs(fft_freq*sampling_rate), power)
     plt.show()
 
-rate, audiodata = wavfile.read('modem.wav')
-print(rate)
-
-audiodata = stereo_to_mono(audiodata)
-
-audiodata = butter_lowpass_filter(audiodata, 5000, 44100)
-
-audiodata = downsample_signal(audiodata, 4)
-
-window_size = 1024
-hamming_window = generate_window(window_size)
+# rate, audiodata = wavfile.read('modem.wav')
+# print(rate)
+#
+# audiodata = stereo_to_mono(audiodata)
+#
+# audiodata = butter_lowpass_filter(audiodata, 5000, 44100)
+#
+# audiodata = downsample_signal(audiodata, 4)
+#
+# window_size = 1024
+# hamming_window = generate_window(window_size)
 
 # sampling_rate = 11025
 # do_fft(audiodata, window_size, hamming_window, sampling_rate)
@@ -71,10 +71,29 @@ hamming_window = generate_window(window_size)
 # ax.set_xlabel('Time [s]');
 
 # DO IT DIRECTLY
-freqs, times, Sx = spectrogram(audiodata, fs=11025, window='hamming', nperseg=1024, detrend=False, scaling='spectrum')
-f, ax = plt.subplots(figsize=(4.8, 2.4))
-ax.pcolormesh(times, freqs / 1000, 10 * np.log10(Sx), cmap='viridis')
-ax.set_ylabel('Frequency [kHz]')
-ax.set_xlabel('Time [s]');
+# freqs, times, Sx = spectrogram(audiodata, fs=11025, window='hamming', nperseg=1024, detrend=False, scaling='spectrum')
+# f, ax = plt.subplots(figsize=(4.8, 2.4))
+# ax.pcolormesh(times, freqs / 1000, 10 * np.log10(Sx), cmap='viridis')
+# ax.set_ylabel('Frequency [kHz]')
+# ax.set_xlabel('Time [s]');
 
-plt.show()
+# b, a = butter_lowpass(5000, 11025)
+
+# w, h = freqs(b,a)
+# plt.plot(w, 20 * np.log10(abs(h)))
+# plt.xscale('log')
+# plt.show()
+
+# Low pass filter
+# b, a = butter(4, 5000, 'low', analog=True)
+# w, h = freqs(b, a)
+# plt.plot(w, 20 * np.log10(abs(h)))
+# plt.xscale('log')
+# plt.title('Butterworth filter frequency response')
+# plt.xlabel('Frequency [radians / second]')
+# plt.ylabel('Amplitude [dB]')
+# plt.margins(0, 0.1)
+# plt.grid(which='both', axis='both')
+# plt.axvline(100, color='green') # cutoff frequency
+# plt.savefig('lowpass.png')
+# plt.show()

@@ -1,7 +1,7 @@
 import scipy.io.wavfile as wavfile
 from scipy.signal import decimate, butter, filtfilt, spectrogram
 from scipy.signal.windows import hamming
-from scipy.fftpack import fft
+from scipy.fftpack import fft, fftfreq
 import matplotlib.pyplot as plt
 import numpy as np
 from skimage import util # operate on all windows in one line
@@ -54,10 +54,21 @@ def apply_window_function(data, window_size, window_function):
     return windows    
 
 def fft_demo(data, window_size, window_function, sampling_rate):
+    # fft_data = fft(data[:window_size]*window_function)
+    # fft_data = np.multiply(fft(data[:window_size]), window_function)
+    # # plt.plot(fft_data)
+    # fft_freq = np.fft.fftfreq(window_size//2)
+    # power = np.abs(fft_data[:window_size//2])
+    # plt.subplot(2, 1, 1)
+    # # plt.plot(, power)
+    # plt.plot(np.abs(fft_freq)*sampling_rate, np.abs(fft_data)[:window_size//2])
+    # plt.subplot(2, 1, 2)
+    # plt.plot(power)
+    # plt.show()
     fft_data = fft(data[:window_size]*window_function)
-    fft_freq = np.fft.fftfreq(window_size//2)
-    power = np.abs(fft_data[:window_size//2])
-    plt.plot(np.abs(fft_freq*sampling_rate), power)
+    freq = fftfreq(len(fft_data), 1/SAMPLING_RATE)
+    plt.savefig('fft.png')
+    plt.plot(freq, np.abs(fft_data))
     plt.show()
 
 def plot_spectrogram(data, window_size, sampling_rate):
@@ -110,9 +121,9 @@ if __name__ == "__main__":
     # plt.show()
 
     windows = apply_window_function(decimated_data, SAMPLES_PER_WINDOW, hamming_window)
-    
+
     # FFT on a single window
-    # fft_demo(decimated_data, SAMPLES_PER_WINDOW, hamming_window, SAMPLING_RATE)
+    fft_demo(decimated_data, SAMPLES_PER_WINDOW, hamming_window, SAMPLING_RATE)
 
     # TODO: Under construction
     # do_fft(windows, SAMPLES_PER_WINDOW)
