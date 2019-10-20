@@ -23,11 +23,13 @@
 \begin{frame}[t] % t option for top aligned frame
 \frametitle{Objective}
 \begin{itemize}
-    \item Extract small chunks of each song and fingerprint them.
+    \item Extract small chunks of each song and fingerprint the song.
     \item Store the chunks in an appropriate database schema. 
     \item Fingerprint a small audio sample given by user and identify the song being played.
-    \item IMAGE
 \end{itemize}
+\begin{figure}
+    \includegraphics[width=0.9\textwidth]{Flowchart.png}
+\end{figure}
 \end{frame}
 
 \begin{frame}[t]
@@ -64,7 +66,7 @@
         \item We need to filter the higher frequencies in order to avoid aliasing.
         \item \alert{Aliasing}: Distortion that results when a signal reconstructed from samples is different from the original continuous signal.
         \item We achieve the same by filtering the signal before downsampling (using a low pass filter)
-        \item IMAGE OF A LOW PASS FILTER       
+        \item IMAGE OF A LOW PASS FILTER
     \end{itemize}
 \end{frame}
 
@@ -90,7 +92,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[t]
     \frametitle{Spectrogram}
     \begin{itemize}
         \item A three dimensional graph where:
@@ -100,8 +102,8 @@
             \item Color indicates amplitude of a frequency at a certain time
         \end{itemize}
         \item \begin{figure}
-                \includegraphics{Spectrogram_Specimens/ActualSong.png}
-              \end{figure}
+            \includegraphics[width=0.5625\textwidth]{Spectrogram_Specimens/ActualSong.png}
+        \end{figure}
     \end{itemize}
 \end{frame}
 
