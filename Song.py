@@ -75,8 +75,9 @@ def plot_spectrogram(data, window_size, sampling_rate):
     freq, time, Spectrogram = spectrogram(data, fs=sampling_rate, window='hamming', nperseg=window_size, noverlap=window_size - 100, detrend=False,  scaling='spectrum')
     f, ax = plt.subplots(figsize=(4.8, 2.4))
     ax.pcolormesh(time, freq/1000, np.log10(Spectrogram), cmap="PuOr")
-    ax.set_ylabel('Frequency [kHz]')
-    ax.set_xlabel('Time [sec]')
+    ax.set_ylabel('Frequency [kHz]', fontsize=22)
+    ax.set_xlabel('Time [sec]', fontsize=22)
+    plt.title("Renai Circulation (Bakemonogatari OP)", fontsize=22)
     plt.show()
 
 def do_fft(windows, window_size):
@@ -89,7 +90,7 @@ def do_fft(windows, window_size):
 if __name__ == "__main__":
 
     # Read the audio file
-    filename = 'AudioSamples/modem.wav'
+    filename = 'AudioSamples/RenaiCirculation.wav'
     rate, audio_data = read_audio_file(filename)
     assert(rate == DEFAULT_SAMPLING_RATE) # Some samples are sampled at 48 kHz
 

@@ -1,8 +1,9 @@
 \documentclass{beamer}
-\usetheme{Rochester}
+% \usetheme{Rochester}
 \setbeamercovered{transparent}
+
 \usepackage{amsfonts}
-\usepackage{graphics}
+\usepackage{graphicx}
 
 \author{Yashraj Kakkad - AU1841036 \\
         Prayag Savsani - AU1841035 \\
@@ -28,11 +29,11 @@
     \item Fingerprint a small audio sample given by user and identify the song being played.
 \end{itemize}
 \begin{figure}
-    \includegraphics[width=0.9\textwidth]{Flowchart.png}
+    \includegraphics[width=\textwidth]{Flowchart.png}
 \end{figure}
 \end{frame}
 
-\begin{frame}[t]
+\begin{frame}
 \frametitle{Sampling}
 \begin{itemize}
     \item Music is typically sampled at \alert{44.1 kHz}.
@@ -42,7 +43,7 @@
 \end{frame}
 
 
-\begin{frame}[t]
+\begin{frame}
     \frametitle{Problems with sampling rate}
     \begin{itemize}
         \item Performing \alert{Fast Fourier Transform} on a few hundred songs takes days at such a high sampling rate.
@@ -52,7 +53,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}[t]
+\begin{frame}
     \frametitle{The song is not the same}   
     \begin{itemize}
         \item Turns out that the most important part of a song (to us) is below \alert{5 kHz}.
@@ -66,11 +67,13 @@
         \item We need to filter the higher frequencies in order to avoid aliasing.
         \item \alert{Aliasing}: Distortion that results when a signal reconstructed from samples is different from the original continuous signal.
         \item We achieve the same by filtering the signal before downsampling (using a low pass filter)
-        \item IMAGE OF A LOW PASS FILTER
+        \begin{figure}
+            \includegraphics[width=0.6\textwidth]{lowpassfilter.png}
+        \end{figure}
     \end{itemize}
 \end{frame}
 
-\begin{frame}[t]
+\begin{frame}
     \frametitle{Discrete Fourier Transform}
     \begin{itemize}
         \item Gives us the frequency spectrum.
@@ -79,7 +82,7 @@
                 X(n) = \sum_{k=0}^{N-1} x[k] e^{-j(2\pi kn/N)}
             \end{align*}
         \item To obtain frequencies of each small part of the song for spectral analysis, we have to apply DFT on each small part of the song.
-        \item This small part of the song can be seen as a window of N samples on which the DFT is performed.
+        \item This small part of the song can be seen as a \alert{window of N samples} on which the DFT is performed.
         \item Such windows are extracted using a \alert{window function}.
     \end{itemize}
 \end{frame}
@@ -90,6 +93,9 @@
         \item Discrete Fourier Transform requires \(\mathcal{O}(N^2)\) computations where N is the number of samples.
         \item Today's Fast Fourier Transform implementations are \(\mathcal{O}(NlogN)\), which is a huge improvement.
     \end{itemize}
+    \begin{figure}
+        \includegraphics[width=0.575\textwidth]{fft.png}
+    \end{figure}
 \end{frame}
 
 \begin{frame}[t]
@@ -101,10 +107,12 @@
             \item Y-axis indicates frequency
             \item Color indicates amplitude of a frequency at a certain time
         \end{itemize}
-        \item \begin{figure}
-            \includegraphics[width=0.5625\textwidth]{Spectrogram_Specimens/ActualSong.png}
-        \end{figure}
     \end{itemize}
+    \vspace{-0.6cm}
+    \begin{figure}
+        \centering
+        \includegraphics[width=1.000325\textwidth]{Spectrogram_Specimens/ActualSong.png}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -134,10 +142,18 @@
     \frametitle{Music Indexing and Matching}
     \begin{itemize}
         \item We store these frequencies as a hashed value in our database.
-        \item We compare the user data with every song's data. We can compute the offset(time delay) by subtracting their positions.
+        \item We compare the user data with every song's data. We can compute the offset (time delay) by subtracting their positions.
         \item If we have a lot of hashes with matching offsets, we've found our song.
         % \item We compare the user data with every song's data. If we have a lot of hashes with matching values, we've found our song.
     \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{The End}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{end.jpeg}
+    \end{figure}
 \end{frame}
 
 \end{document}
