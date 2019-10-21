@@ -17,14 +17,14 @@ def read_audio_file(filename):
         rate, data = wavfile.read(filename)
         return rate, data
     else:
-        converted_file = mp3_to_wav(filename)
+        converted_file = convert_to_wav(filename)
         rate, data = wavfile.read(converted_file)
         return rate, data
 
 def stereo_to_mono(audiodata):
     return audiodata.sum(axis=1) / 2
 
-def mp3_to_wav(filename):
+def convert_to_wav(filename):
     song_title = filename.split('.')[0]
     song_format = filename.split('.')[1]
     exported_song = song_title + '.wav'
