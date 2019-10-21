@@ -67,8 +67,9 @@ def fft_demo(data, window_size, window_function, sampling_rate):
     # plt.show()
     fft_data = fft(data[:window_size]*window_function)
     freq = fftfreq(len(fft_data), 1/SAMPLING_RATE)
-    plt.savefig('fft.png')
     plt.plot(freq, np.abs(fft_data))
+    plt.xlabel("Frequency [Hz]", fontsize=22)
+    plt.ylabel("|X(w)|", fontsize=22)
     plt.show()
 
 def plot_spectrogram(data, window_size, sampling_rate):
