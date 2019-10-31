@@ -33,6 +33,7 @@ def stereo_to_mono(audiodata):
 def convert_to_wav(filename):
     song_title = filename.split('.')[0]
     song_format = filename.split('.')[1]
+    # song_title, song_format = filename.split('.')[0:2]
     exported_song = song_title + '.wav'
     AudioSegment.from_file(filename, format=song_format).export(exported_song, format="wav")
     return exported_song
@@ -52,8 +53,9 @@ def butter_lowpass_filter(data, cutoff, fs, order=5):
 
 
 def downsample_signal(data, factor):
-    downsampled_data = decimate(data, factor)
-    return downsampled_data
+    # downsampled_data = decimate(data, factor)
+    # return downsampled_data
+    return decimate(data, factor)
 
 
 def apply_window_function(data, window_size, window_function):
@@ -63,7 +65,7 @@ def apply_window_function(data, window_size, window_function):
     return windows
 
 
-def fft_demo(data, window_size, window_function, sampling_rate):
+def fft_demo(data, window_size, window_function):
     # fft_data = fft(data[:window_size]*window_function)
     # fft_data = np.multiply(fft(data[:window_size]), window_function)
     # # plt.plot(fft_data)
@@ -135,7 +137,7 @@ def filter_spectrogram(windows, window_size):
     return filtered_bins
 
 
-# Returns band index for a givne bin_index
+# Returns band index for a given bin_index
 def return_band_index(bin_index):
     band_index = 0;
     while bin_index > RANGES[band_index]:
@@ -151,7 +153,8 @@ def plot_filtered_spectrogram(filtered_data):
         Here, np.array(1*3) => [3]
               np.array([1]*3) => [1,1,1]
         This is why, in the code below, the term 'window_index' is inside square brackets.
-        All in all, it generates an array of size equal to no. of bands with all values equal to window_index*time_resolution (to convert window indices to time values)
+        All in all, it generates an array of size equal to no. of bands with all values equal to 
+        window_index*time_resolution (to convert window indices to time values)
         """
         timestamp = np.array([window_index] * len(filtered_data[window_index])) * TIME_RESOLUTION
 
@@ -174,7 +177,7 @@ if __name__ == "__main__":
     rate, audio_data = read_audio_file(filename)
     assert (rate == DEFAULT_SAMPLING_RATE)  # Some samples are sampled at 48 kHz
 
-    # Convert stereo to mono
+    # Convert stereo to mono, if required
     if audio_data.ndim != 1:  # Checks no. of channels. Some samples are already mono
         audio_data = stereo_to_mono(audio_data)
     # print(audio_data)
@@ -202,7 +205,10 @@ if __name__ == "__main__":
     # plt.show()
 
     windows = apply_window_function(decimated_data, SAMPLES_PER_WINDOW, hamming_window)
-
+    print(type(windows))
+    print(windows)
+    print(len(decimated_data))
+    print(len(windows))
     # FFT on a single window
     # fft_data, freq = fft_demo(decimated_data, SAMPLES_PER_WINDOW, hamming_window, SAMPLING_RATE)
     # plt.plot(freq, np.abs(fft_data))
