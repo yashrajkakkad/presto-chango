@@ -15,7 +15,6 @@ TIME_RESOLUTION = SAMPLES_PER_WINDOW / SAMPLING_RATE
 UPPER_FREQ_LIMIT = 300
 RANGES = [40, 80, 120, 180, UPPER_FREQ_LIMIT + 1]
 
-
 def read_audio_file(filename):
     if filename.split('.')[1] == 'wav':
         rate, data = wavfile.read(filename)
@@ -91,10 +90,10 @@ def fft_one_window(window):
 
 # Plot unfiltered spectrogram
 def plot_spectrogram(data, window_size, sampling_rate):
-    freq, time, spectrogram = spectrogram(data, fs=sampling_rate, window='hamming', nperseg=window_size,
+    freq, time, Spectrogram = spectrogram(data, fs=sampling_rate, window='hamming', nperseg=window_size,
                                           noverlap=window_size - 100, detrend=False, scaling='spectrum')
     f, ax = plt.subplots(figsize=(4.8, 2.4))
-    ax.pcolormesh(time, freq / 1000, np.log10(spectrogram), cmap="PuOr")
+    ax.pcolormesh(time, freq / 1000, np.log10(Spectrogram), cmap="PuOr")
     ax.set_ylabel('Frequency [kHz]', fontsize=22)
     ax.set_xlabel('Time [sec]', fontsize=22)
     plt.title("Renai Circulation (Bakemonogatari OP)", fontsize=22)
@@ -170,12 +169,17 @@ def plot_filtered_spectrogram(filtered_data):
     plt.show()
 
 
-def hash_window(filtered_bin):
-    fuz_factor = 2
-    return (filtered_bin[4] - (filtered_bin[4] % fuz_factor)) * 1e8 + (
-            filtered_bin[3] - (filtered_bin[3] % fuz_factor)) * 1e5 + (
-                   filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e2 + (
-                   filtered_bin[4] - (filtered_bin[4] % fuz_factor))
+def song_recipe(filename):
+    rate, audio_data = read_audio_file(filename)
+    if audio_data.ndim != 1:  # Checks no. of channels. Some samples are already mono
+        audio_data = stereo_to_mono(audio_data)
+    filtered_data = butter_lowpass_filter(audio_data, CUTOFF_FREQUENCY, DEFAULT_SAMPLING_RATE)
+    decimated_data = downsample_signal(filtered_data, DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
+    hamming_window = hamming(SAMPLES_PER_WINDOW, sym=False)
+    windows = apply_window_function(decimated_data, SAMPLES_PER_WINDOW, hamming_window)
+    filtered_spectrogram_data = filter_spectrogram(windows, SAMPLES_PER_WINDOW)
+    return filtered_spectrogram_data
+    # plot_filtered_spectrogram(filtered_spectrogram_data)
 
 
 if __name__ == "__main__":
