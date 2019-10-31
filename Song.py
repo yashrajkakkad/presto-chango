@@ -139,7 +139,7 @@ def filter_spectrogram(windows, window_size):
 
 # Returns band index for a given bin_index
 def return_band_index(bin_index):
-    band_index = 0;
+    band_index = 0
     while bin_index > RANGES[band_index]:
         band_index = band_index + 1
     return band_index
@@ -168,6 +168,14 @@ def plot_filtered_spectrogram(filtered_data):
     for i in range(len(RANGES)):
         plt.axhline(y=RANGES[i], c='r')
     plt.show()
+
+
+def hash_window(filtered_bin):
+    fuz_factor = 2
+    return (filtered_bin[4] - (filtered_bin[4] % fuz_factor)) * 1e8 + (
+            filtered_bin[3] - (filtered_bin[3] % fuz_factor)) * 1e5 + (
+                   filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e2 + (
+                   filtered_bin[4] - (filtered_bin[4] % fuz_factor))
 
 
 if __name__ == "__main__":
