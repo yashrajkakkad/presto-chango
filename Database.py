@@ -23,18 +23,26 @@ def hash_window(filtered_bin):
 
 def hash_song(song_id, filtered_bins, hash_dictionary):
     for filtered_bin in filtered_bins:
-        if hash_dictionary[hash_window(filtered_bin)]:
+        try:
             hash_dictionary[hash_window(filtered_bin)].append(song_id)
-        else:
+        except Exception:
             hash_dictionary[hash_window(filtered_bin)] = [song_id]
 
 
 def create_database():
     song_to_id = {}
     hash_dictionary = {}
-    for filename in os.walk('AudioSamples'):
-        song_id = int(random() * 1000)
-        song_to_id[filename] = song_id
-        filtered_bins = song_recipe(filename)
-        hash_song(song_id, filtered_bins, hash_dictionary)
+    for dirpath, dirname, filenames in os.walk('Songs'):
+        for filename in filenames:
+            print(filename)
+            song_id = int(random() * 1000)
+            song_to_id[filename] = song_id
+            filtered_bins = song_recipe("Songs/" + filename)
+            hash_song(song_id, filtered_bins, hash_dictionary)
     return song_to_id, hash_dictionary
+
+
+if __name__ == "__main__":
+    song_to_id, hash_dictionary = create_database()
+    print(song_to_id)
+    print(hash_dictionary)
