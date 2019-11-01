@@ -6,8 +6,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from skimage import util  # operate on all windows in one line
 from pydub import AudioSegment  # convert mp3 to wav
-import pyaudio # To record and playback audio. NOTE: Linux users should install PortAudio package from their respective distro repos
-import wave # To writeback the recorded samples as .wav files. Not using scipy.wavfile.write because it doesn't provide finer controls
+
+import pyaudio  # To record and playback audio.
+# NOTE: Linux users should install PortAudio from their respective distro repos
+
+import wave  # To writeback the recorded samples as .wav files.
+# Not using scipy.wavfile.write because it doesn't provide finer controls
 
 
 DEFAULT_SAMPLING_RATE = 44100
@@ -38,7 +42,8 @@ def convert_to_wav(filename):
     song_format = filename.split('.')[1]
     # song_title, song_format = filename.split('.')[0:2]
     exported_song = song_title + '.wav'
-    AudioSegment.from_file(filename, format=song_format).export(exported_song, format="wav")
+    AudioSegment.from_file(filename, format=song_format).export(
+        exported_song, format="wav")
     return exported_song
 
 
@@ -62,8 +67,8 @@ def downsample_signal(data, factor):
 
 
 def apply_window_function(data, window_size, window_function):
-    windows = util.view_as_windows(data, window_shape=(window_size,),
-                                   step=100)  # (window_size,) ==> dimensions are window_size x 1
+    # (window_size,) ==> dimensions are window_size x 1
+    windows = util.view_as_windows(data, window_shape=(window_size,), step=100)
     windows = windows * window_function
     return windows
 
@@ -76,7 +81,8 @@ def fft_demo(data, window_size, window_function):
     # power = np.abs(fft_data[:window_size//2])
     # plt.subplot(2, 1, 1)
     # # plt.plot(, power)
-    # plt.plot(np.abs(fft_freq)*sampling_rate, np.abs(fft_data)[:window_size//2])
+    # plt.plot(np.abs(fft_freq)*sampling_rate,
+    #          np.abs(fft_data)[:window_size//2])
     # plt.subplot(2, 1, 2)
     # plt.plot(power)
     # plt.show()
@@ -94,8 +100,10 @@ def fft_one_window(window, window_size):
 
 # Plot unfiltered spectrogram
 def plot_spectrogram(data, window_size, sampling_rate):
-    freq, time, Spectrogram = spectrogram(data, fs=sampling_rate, window='hamming', nperseg=window_size,
-                                          noverlap=window_size - 100, detrend=False, scaling='spectrum')
+    freq, time, Spectrogram = spectrogram(data, fs=sampling_rate,
+                                          window='hamming', nperseg=window_size,
+                                          noverlap=window_size-100, detrend=False,
+                                          scaling='spectrum')
     f, ax = plt.subplots(figsize=(4.8, 2.4))
     ax.pcolormesh(time, freq / 1000, np.log10(Spectrogram), cmap="PuOr")
     ax.set_ylabel('Frequency [kHz]', fontsize=22)
@@ -113,8 +121,8 @@ def filter_spectrogram(windows, window_size):
     # plt.plot(freqs, spectrum)
 
     # Init 2D list
-    filtered_bins = [[0 for i in range(len(RANGES))] for j in
-                     range(len(windows))]  # rows = no. of windows, cols = no. of bands
+    filtered_bins = [[0 for i in range(len(RANGES))] for j in range(
+        len(windows))]  # rows = no. of windows, cols = no. of bands
 
     for i in range(len(windows)):
         fft_data, freq = fft_one_window(windows[i], window_size)
@@ -137,7 +145,7 @@ def filter_spectrogram(windows, window_size):
                 max_amp_freq_value = freq[j]
 
             filtered_bins[i][current_freq_range_index] = max_amp_freq_value
-            
+
     return filtered_bins
 
 
@@ -157,21 +165,25 @@ def plot_filtered_spectrogram(filtered_data):
         Here, np.array(1*3) => [3]
               np.array([1]*3) => [1,1,1]
         This is why, in the code below, the term 'window_index' is inside square brackets.
-        All in all, it generates an array of size equal to no. of bands with all values equal to 
+        All in all, it generates an array of size equal to no. of bands with all values equal to
         window_index*time_resolution (to convert window indices to time values)
         """
-        timestamp = np.array([window_index] * len(filtered_data[window_index])) * TIME_RESOLUTION
+        timestamp = np.array(
+            [window_index] * len(filtered_data[window_index])) * TIME_RESOLUTION
 
         # Scatter plot of filtered bins
         # c => color of point, marker => shape of mark
         plt.scatter(timestamp, filtered_data[window_index], c='b', marker='.')
 
-    plt.ylim(0, 512)  # To force the graph to be plotted upto 512 even though our y values range from 0 to 300
+    # To force the graph to be plotted upto 512 even though our y values range
+    # from 0 to 300
+    plt.ylim(0, 512)
 
     # Below loop draws horizontal lines for each band
     for i in range(len(RANGES)):
         plt.axhline(y=RANGES[i], c='r')
     plt.show()
+
 
 def record_sample_recipe(filename, duration):
     chunk = 1024  # Record in chunks of 1024 samples
@@ -196,7 +208,7 @@ def record_sample_recipe(filename, duration):
         data = stream.read(chunk)
         frames.append(data)
 
-    # Stop and close the stream 
+    # Stop and close the stream
     stream.stop_stream()
     stream.close()
     # Terminate the PortAudio interface
@@ -209,22 +221,23 @@ def record_sample_recipe(filename, duration):
     wf.setframerate(fs)
     wf.writeframes(b''.join(frames))
     wf.close()
-    
+
+
 def playback_recorded_sample(filename):
-    chunk = 1024 # Set chunk size of 1024 samples per data frame
+    chunk = 1024  # Set chunk size of 1024 samples per data frame
 
-    wf = wave.open(filename, 'rb') # Open the sound file 
+    wf = wave.open(filename, 'rb')  # Open the sound file
 
-    p = pyaudio.PyAudio() # Create an interface to PortAudio
+    p = pyaudio.PyAudio()  # Create an interface to PortAudio
 
     # Open a .Stream object to write the WAV file to
     # 'output = True' indicates that the sound will be played rather than recorded
-    stream = p.open(format = p.get_format_from_width(wf.getsampwidth()),
-                    channels = wf.getnchannels(),
-                    rate = wf.getframerate(),
-                    output = True)
-    
-    data = wf.readframes(chunk) # Read data in chunks
+    stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                    channels=wf.getnchannels(),
+                    rate=wf.getframerate(),
+                    output=True)
+
+    data = wf.readframes(chunk)  # Read data in chunks
 
     # Play the sound by writing the audio data to the stream
     while data != '':
@@ -235,14 +248,18 @@ def playback_recorded_sample(filename):
     stream.close()
     p.terminate()
 
+
 def song_recipe(filename):
     rate, audio_data = read_audio_file(filename)
     if audio_data.ndim != 1:  # Checks no. of channels. Some samples are already mono
         audio_data = stereo_to_mono(audio_data)
-    filtered_data = butter_lowpass_filter(audio_data, CUTOFF_FREQUENCY, DEFAULT_SAMPLING_RATE)
-    decimated_data = downsample_signal(filtered_data, DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
+    filtered_data = butter_lowpass_filter(
+        audio_data, CUTOFF_FREQUENCY, DEFAULT_SAMPLING_RATE)
+    decimated_data = downsample_signal(
+        filtered_data, DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
     hamming_window = hamming(SAMPLES_PER_WINDOW, sym=False)
-    windows = apply_window_function(decimated_data, SAMPLES_PER_WINDOW, hamming_window)
+    windows = apply_window_function(
+        decimated_data, SAMPLES_PER_WINDOW, hamming_window)
     filtered_spectrogram_data = filter_spectrogram(windows, SAMPLES_PER_WINDOW)
     return filtered_spectrogram_data
     # plot_filtered_spectrogram(filtered_spectrogram_data)
@@ -252,16 +269,16 @@ if __name__ == "__main__":
 
     # Read the audio file
     filename = 'Songs/RenaiCirculation.wav'
-    
+
     filtered_spectrogram_data = song_recipe(filename)
     plot_filtered_spectrogram(filtered_spectrogram_data)
-    
+
     # record_sample_recipe('output.wav',30)
     # filtered_spectrogram_data = song_recipe('output.wav')
-    # plot_filtered_spectrogram(filtered_spectrogram_data)  
-    
+    # plot_filtered_spectrogram(filtered_spectrogram_data)
+
     # playback_recorded_sample('output.wav')
-    
+
     # Convert stereo to mono, if required
     # if audio_data.ndim != 1:  # Checks no. of channels. Some samples are already mono
     #     audio_data = stereo_to_mono(audio_data)

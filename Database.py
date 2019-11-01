@@ -15,9 +15,9 @@ def hash_window(filtered_bin):
     """
 
     """
-    Note that we must assume that the recording is not done in perfect conditions (i.e., a “deaf room”), 
-    and as a result we must include a fuzz factor. 
-    Fuzz factor analysis should be taken seriously, and in a real system, 
+    Note that we must assume that the recording is not done in perfect conditions (i.e., a “deaf room”),
+    and as a result we must include a fuzz factor.
+    Fuzz factor analysis should be taken seriously, and in a real system,
     the program should have an option to set this parameter based on the conditions of the recording.
     """
     fuz_factor = 2  # for error correction TODO: figure out why?
