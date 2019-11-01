@@ -11,6 +11,7 @@ import pyaudio  # To record and playback audio.
 # NOTE: Linux users should install PortAudio from their respective distro repos
 
 import wave  # To writeback the recorded samples as .wav files.
+
 # Not using scipy.wavfile.write because it doesn't provide finer controls
 
 
@@ -102,7 +103,7 @@ def fft_one_window(window, window_size):
 def plot_spectrogram(data, window_size, sampling_rate):
     freq, time, Spectrogram = spectrogram(data, fs=sampling_rate,
                                           window='hamming', nperseg=window_size,
-                                          noverlap=window_size-100, detrend=False,
+                                          noverlap=window_size - 100, detrend=False,
                                           scaling='spectrum')
     f, ax = plt.subplots(figsize=(4.8, 2.4))
     ax.pcolormesh(time, freq / 1000, np.log10(Spectrogram), cmap="PuOr")
@@ -185,13 +186,13 @@ def plot_filtered_spectrogram(filtered_data):
     plt.show()
 
 
-def record_sample_recipe(filename, duration):
+def record_sample_recipe(filename="output.wav"):
     chunk = 1024  # Record in chunks of 1024 samples
     sample_format = pyaudio.paInt16  # 16 bits per sample
     channels = 2
     fs = 44100  # Record at 44100 samples per second
     seconds = 30
-    filename = "output.wav"
+    # filename = "output.wav"
 
     p = pyaudio.PyAudio()  # Create an interface to PortAudio
 
@@ -223,7 +224,7 @@ def record_sample_recipe(filename, duration):
     wf.close()
 
 
-def playback_recorded_sample(filename):
+def playback_recorded_sample(filename="output.wav"):
     chunk = 1024  # Set chunk size of 1024 samples per data frame
 
     wf = wave.open(filename, 'rb')  # Open the sound file
@@ -266,12 +267,15 @@ def song_recipe(filename):
 
 
 if __name__ == "__main__":
-
     # Read the audio file
-    filename = 'Songs/RenaiCirculation.wav'
+    # filename = 'Songs/RenaiCirculation.wav'
+    #
+    # filtered_spectrogram_data = song_recipe(filename)
+    # plot_filtered_spectrogram(filtered_spectrogram_data)
 
-    filtered_spectrogram_data = song_recipe(filename)
-    plot_filtered_spectrogram(filtered_spectrogram_data)
+    # Testing song recording
+    record_sample_recipe()
+    playback_recorded_sample()
 
     # record_sample_recipe('output.wav',30)
     # filtered_spectrogram_data = song_recipe('output.wav')
