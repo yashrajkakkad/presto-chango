@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from skimage import util  # operate on all windows in one line
 from pydub import AudioSegment  # convert mp3 to wav
+import pyaudio # To record and playback audio. NOTE: Linux users should install PortAudio package from their respective distro repos
+import wave # To writeback the recorded samples as .wav files. Not using scipy.wavfile.write because it doesn't provide finer controls
+
 
 DEFAULT_SAMPLING_RATE = 44100
 SAMPLING_RATE = 11025
@@ -14,6 +17,7 @@ SAMPLES_PER_WINDOW = 1024
 TIME_RESOLUTION = SAMPLES_PER_WINDOW / SAMPLING_RATE
 UPPER_FREQ_LIMIT = 300
 RANGES = [40, 80, 120, 180, UPPER_FREQ_LIMIT + 1]
+
 
 def read_audio_file(filename):
     if filename.split('.')[1] == 'wav':
@@ -169,6 +173,67 @@ def plot_filtered_spectrogram(filtered_data):
         plt.axhline(y=RANGES[i], c='r')
     plt.show()
 
+def record_sample_recipe(filename, duration):
+    chunk = 1024  # Record in chunks of 1024 samples
+    sample_format = pyaudio.paInt16  # 16 bits per sample
+    channels = 2
+    fs = 44100  # Record at 44100 samples per second
+    seconds = 30
+    filename = "output.wav"
+
+    p = pyaudio.PyAudio()  # Create an interface to PortAudio
+
+    stream = p.open(format=sample_format,
+                    channels=channels,
+                    rate=fs,
+                    frames_per_buffer=chunk,
+                    input=True)
+
+    frames = []  # Initialize array to store frames
+
+    # Store data in chunks for 3 seconds
+    for i in range(0, int(fs / chunk * seconds)):
+        data = stream.read(chunk)
+        frames.append(data)
+
+    # Stop and close the stream 
+    stream.stop_stream()
+    stream.close()
+    # Terminate the PortAudio interface
+    p.terminate()
+
+    # Save the recorded data as a WAV file
+    wf = wave.open(filename, 'wb')
+    wf.setnchannels(channels)
+    wf.setsampwidth(p.get_sample_size(sample_format))
+    wf.setframerate(fs)
+    wf.writeframes(b''.join(frames))
+    wf.close()
+    
+def playback_recorded_sample(filename):
+    chunk = 1024 # Set chunk size of 1024 samples per data frame
+
+    wf = wave.open(filename, 'rb') # Open the sound file 
+
+    p = pyaudio.PyAudio() # Create an interface to PortAudio
+
+    # Open a .Stream object to write the WAV file to
+    # 'output = True' indicates that the sound will be played rather than recorded
+    stream = p.open(format = p.get_format_from_width(wf.getsampwidth()),
+                    channels = wf.getnchannels(),
+                    rate = wf.getframerate(),
+                    output = True)
+    
+    data = wf.readframes(chunk) # Read data in chunks
+
+    # Play the sound by writing the audio data to the stream
+    while data != '':
+        stream.write(data)
+        data = wf.readframes(chunk)
+
+    # Close and terminate the stream
+    stream.close()
+    p.terminate()
 
 def song_recipe(filename):
     rate, audio_data = read_audio_file(filename)
@@ -186,24 +251,31 @@ def song_recipe(filename):
 if __name__ == "__main__":
 
     # Read the audio file
-    filename = 'Songs/SamsungCover.wav'
-    rate, audio_data = read_audio_file(filename)
-    assert (rate == DEFAULT_SAMPLING_RATE)  # Some samples are sampled at 48 kHz
-
+    filename = 'Songs/RenaiCirculation.wav'
+    
+    filtered_spectrogram_data = song_recipe(filename)
+    plot_filtered_spectrogram(filtered_spectrogram_data)
+    
+    # record_sample_recipe('output.wav',30)
+    # filtered_spectrogram_data = song_recipe('output.wav')
+    # plot_filtered_spectrogram(filtered_spectrogram_data)  
+    
+    # playback_recorded_sample('output.wav')
+    
     # Convert stereo to mono, if required
-    if audio_data.ndim != 1:  # Checks no. of channels. Some samples are already mono
-        audio_data = stereo_to_mono(audio_data)
-    # print(audio_data)
+    # if audio_data.ndim != 1:  # Checks no. of channels. Some samples are already mono
+    #     audio_data = stereo_to_mono(audio_data)
+    # # print(audio_data)
 
     # Pass the signal to a low-pass filter with a cutoff frequency of 5000 Hz
-    filtered_data = butter_lowpass_filter(audio_data, CUTOFF_FREQUENCY, DEFAULT_SAMPLING_RATE)
+    # filtered_data = butter_lowpass_filter(audio_data, CUTOFF_FREQUENCY, DEFAULT_SAMPLING_RATE)
 
     # Decimate by a factor of 4
-    decimated_data = downsample_signal(filtered_data, DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
+    # decimated_data = downsample_signal(filtered_data, DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
     # print(DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
     # print(decimated_data)
-    first_len = len(filtered_data)
-    second_len = len(decimated_data)
+    # first_len = len(filtered_data)
+    # second_len = len(decimated_data)
     # print(first_len, second_len)
     # assert (first_len / 4 == second_len)
 
@@ -211,13 +283,13 @@ if __name__ == "__main__":
 
     # Generate a hamming window function
     # sym=False since we're going for spectral analysis
-    hamming_window = hamming(SAMPLES_PER_WINDOW, sym=False)
+    # hamming_window = hamming(SAMPLES_PER_WINDOW, sym=False)
     # print(hamming_window)
     # plt.plot(hamming_window)
     # plt.ylabel("Hamming Window baby!")
     # plt.show()
 
-    windows = apply_window_function(decimated_data, SAMPLES_PER_WINDOW, hamming_window)
+    # windows = apply_window_function(decimated_data, SAMPLES_PER_WINDOW, hamming_window)
     # print(type(windows))
     # print(windows)
     # print(len(decimated_data))
@@ -231,6 +303,4 @@ if __name__ == "__main__":
     # plt.show()
 
     # TODO: Under review
-    filtered_spectrogram_data = filter_spectrogram(windows, SAMPLES_PER_WINDOW)
-
-    plot_filtered_spectrogram(filtered_spectrogram_data)
+    # filtered_spectrogram_data = filter_spectrogram(windows, SAMPLES_PER_WINDOW)
