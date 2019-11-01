@@ -25,25 +25,27 @@ def hash_window(filtered_bin):
     return (filtered_bin[3] - (filtered_bin[3] % fuz_factor)) * 1e8 + (
             filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e5 + (
                    filtered_bin[1] - (filtered_bin[1] % fuz_factor)) * 1e2 + (
-                    filtered_bin[0] - (filtered_bin[0] % fuz_factor))
+                   filtered_bin[0] - (filtered_bin[0] % fuz_factor))
 
 
 def hash_song(song_id, filtered_bins, hash_dictionary):
-    for filtered_bin in filtered_bins:
+    for i, filtered_bin in enumerate(filtered_bins):
         try:
-            hash_dictionary[hash_window(filtered_bin)].append(song_id)
-        except Exception:
-            hash_dictionary[hash_window(filtered_bin)] = [song_id]
+            hash_dictionary[hash_window(filtered_bin)].append((song_id, i))
+        except KeyError:
+            hash_dictionary[hash_window(filtered_bin)] = [(song_id, i)]
 
 
 def create_database():
     song_to_id = {}
+    id_to_song = {}
     hash_dictionary = {}
     for dirpath, dirname, filenames in os.walk('Songs'):
         for filename in filenames:
             print(filename)
             song_id = int(random() * 1000)
             song_to_id[filename] = song_id
+            id_to_song[song_id] = filename
             filtered_bins = song_recipe("Songs/" + filename)
             hash_song(song_id, filtered_bins, hash_dictionary)
     return song_to_id, hash_dictionary

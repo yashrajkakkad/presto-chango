@@ -25,7 +25,7 @@ def hash_window(filtered_bin):
     return (filtered_bin[3] - (filtered_bin[3] % fuz_factor)) * 1e8 + (
             filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e5 + (
                    filtered_bin[1] - (filtered_bin[1] % fuz_factor)) * 1e2 + (
-                    filtered_bin[0] - (filtered_bin[0] % fuz_factor))
+                   filtered_bin[0] - (filtered_bin[0] % fuz_factor))
 
 
 def hash_song(song_id, filtered_bins, hash_dictionary):
