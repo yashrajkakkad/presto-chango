@@ -40,18 +40,20 @@ def create_database():
     song_to_id = {}
     id_to_song = {}
     hash_dictionary = {}
-    for dirpath, dirname, filenames in os.walk('Songs'):
-        for filename in filenames:
-            print(filename)
-            song_id = int(random() * 1000)
-            song_to_id[filename] = song_id
-            id_to_song[song_id] = filename
-            filtered_bins = song_recipe("Songs/" + filename)
-            hash_song(song_id, filtered_bins, hash_dictionary)
-    return song_to_id, hash_dictionary
+    # for dirpath, dirname, filenames in os.walk('Songs'):
+    #     for filename in filenames:
+    for filename in os.listdir('Songs'):
+        print(filename)
+        song_id = int(random() * 1000)
+        song_to_id[filename] = song_id
+        id_to_song[song_id] = filename
+        filtered_bins = song_recipe("Songs/" + filename)
+        hash_song(song_id, filtered_bins, hash_dictionary)
+    return song_to_id, id_to_song, hash_dictionary
 
 
 if __name__ == "__main__":
-    song_to_id, hash_dictionary = create_database()
+    song_to_id, id_to_song, hash_dictionary = create_database()
     print(song_to_id)
+    print(id_to_song)
     print(hash_dictionary)
