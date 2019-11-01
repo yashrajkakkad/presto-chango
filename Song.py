@@ -114,34 +114,35 @@ def filter_spectrogram(windows, window_size):
 
     for i in range(len(windows)):
         fft_data, freq = fft_one_window(windows[i], window_size)
-        max_amp_bin = 0
+        max_amp_freq_value = 0
         max_amp = 0
-        current_band_index = 0
-        for j in range(len(freq)):
+        current_freq_range_index = 0
+        for j in range(len(fft_data)):
 
-            if j > UPPER_FREQ_LIMIT:
+            if freq[j] > UPPER_FREQ_LIMIT:
                 continue
 
             # Reset max. amplitudes and bins for each band
-            if current_band_index != return_band_index(j):
-                current_band_index = return_band_index(j)
-                max_amp_bin = 0
+            if current_freq_range_index != return_freq_range_index(freq[j]):
+                current_freq_range_index = return_freq_range_index(freq[j])
+                max_amp_freq_value = 0
                 max_amp = 0
 
             if fft_data[j] > max_amp:
                 max_amp = fft_data[j]
-                max_amp_bin = j
+                max_amp_freq_value = freq[j]
 
-            filtered_bins[i][current_band_index] = max_amp_bin
+            filtered_bins[i][current_freq_range_index] = max_amp_freq_value
+            
     return filtered_bins
 
 
-# Returns band index for a given bin_index
-def return_band_index(bin_index):
-    band_index = 0
-    while bin_index > RANGES[band_index]:
-        band_index = band_index + 1
-    return band_index
+# Returns band index for a given freq_value
+def return_freq_range_index(freq_value):
+    freq_range_index = 0
+    while freq_value > RANGES[freq_range_index]:
+        freq_range_index = freq_range_index + 1
+    return freq_range_index
 
 
 # Plot filtered spectrogram
@@ -185,7 +186,7 @@ def song_recipe(filename):
 if __name__ == "__main__":
 
     # Read the audio file
-    filename = 'AudioSamples/modem.wav'
+    filename = 'Songs/SamsungCover.wav'
     rate, audio_data = read_audio_file(filename)
     assert (rate == DEFAULT_SAMPLING_RATE)  # Some samples are sampled at 48 kHz
 
@@ -217,10 +218,11 @@ if __name__ == "__main__":
     # plt.show()
 
     windows = apply_window_function(decimated_data, SAMPLES_PER_WINDOW, hamming_window)
-    print(type(windows))
-    print(windows)
-    print(len(decimated_data))
-    print(len(windows))
+    # print(type(windows))
+    # print(windows)
+    # print(len(decimated_data))
+    # print(len(windows))
+
     # FFT on a single window
     # fft_data, freq = fft_demo(decimated_data, SAMPLES_PER_WINDOW, hamming_window, SAMPLING_RATE)
     # plt.plot(freq, np.abs(fft_data))
@@ -231,4 +233,4 @@ if __name__ == "__main__":
     # TODO: Under review
     filtered_spectrogram_data = filter_spectrogram(windows, SAMPLES_PER_WINDOW)
 
-    # plot_filtered_spectrogram(filtered_spectrogram_data)
+    plot_filtered_spectrogram(filtered_spectrogram_data)
