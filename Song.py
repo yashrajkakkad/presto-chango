@@ -82,10 +82,10 @@ def fft_demo(data, window_size, window_function):
 
 
 # FFT on a single window
-def fft_one_window(window):
+def fft_one_window(window, window_size):
     fft_data = fft(window)
     freq = fftfreq(len(fft_data), 1 / SAMPLING_RATE)
-    return np.abs(fft_data), freq
+    return np.abs(fft_data)[:window_size // 2], freq[:window_size // 2]
 
 
 # Plot unfiltered spectrogram
@@ -113,11 +113,11 @@ def filter_spectrogram(windows, window_size):
                      range(len(windows))]  # rows = no. of windows, cols = no. of bands
 
     for i in range(len(windows)):
-        fft_data, freq = fft_one_window(windows[i][:window_size // 2])
+        fft_data, freq = fft_one_window(windows[i], window_size)
         max_amp_bin = 0
         max_amp = 0
         current_band_index = 0
-        for j in range(len(fft_data)):
+        for j in range(len(freq)):
 
             if j > UPPER_FREQ_LIMIT:
                 continue
@@ -231,4 +231,4 @@ if __name__ == "__main__":
     # TODO: Under review
     filtered_spectrogram_data = filter_spectrogram(windows, SAMPLES_PER_WINDOW)
 
-    plot_filtered_spectrogram(filtered_spectrogram_data)
+    # plot_filtered_spectrogram(filtered_spectrogram_data)
