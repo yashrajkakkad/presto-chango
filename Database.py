@@ -1,5 +1,5 @@
 import os
-from random import random
+import random
 from Song import song_recipe
 
 
@@ -50,9 +50,12 @@ def create_database():
     song_to_id = {}
     id_to_song = {}
     hash_dictionary = {}
-    for filename in os.listdir('Songs'):
+    random_ids = random.sample(range(1000), len(os.listdir('Songs')))
+    for song_id, filename in zip(random_ids, os.listdir('Songs')):
         print(filename)
-        song_id = int(random() * 1000)
+        # song_id = int(random() * 1000)
+        # while song_id in song_to_id.items():
+        #     song_id = int(random() * 1000)
         song_to_id[filename] = song_id
         id_to_song[song_id] = filename
         filtered_bins = song_recipe("Songs/" + filename)
@@ -65,3 +68,7 @@ if __name__ == "__main__":
     print(song_to_id)
     print(id_to_song)
     print(hash_dictionary)
+    for keys in hash_dictionary.keys():
+        print(keys)
+    for item in hash_dictionary.items():
+        print(item)
