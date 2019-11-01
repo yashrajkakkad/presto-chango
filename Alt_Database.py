@@ -31,9 +31,9 @@ def hash_window(filtered_bin):
 def hash_song(song_id, filtered_bins, hash_dictionary):
     for filtered_bin in filtered_bins:
         try:
-            hash_dictionary[hash_window(filtered_bin)].append(song_id)
+            hash_dictionary[song_id].append(hash_window(filtered_bin))
         except Exception:
-            hash_dictionary[hash_window(filtered_bin)] = [song_id]
+            hash_dictionary[song_id] = [hash_window(filtered_bin)]
 
 
 def create_database():
@@ -52,4 +52,4 @@ def create_database():
 if __name__ == "__main__":
     song_to_id, hash_dictionary = create_database()
     print(song_to_id)
-    print(hash_dictionary)
+    print(hash_dictionary.get(song_to_id.get('Renai30s.wav')))

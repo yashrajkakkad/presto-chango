@@ -318,6 +318,3 @@ if __name__ == "__main__":
     # plt.xlabel("Frequency [Hz]", fontsize=22)
     # plt.ylabel("|X(w)|", fontsize=22)
     # plt.show()
-
-    # TODO: Under review
-    # filtered_spectrogram_data = filter_spectrogram(windows, SAMPLES_PER_WINDOW)
