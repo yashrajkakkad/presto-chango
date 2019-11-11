@@ -2,6 +2,7 @@ import os
 import random
 from Song import song_recipe
 import pickle
+from Song import convert_to_wav
 
 
 # class DataPoint:
@@ -24,9 +25,9 @@ def hash_window(filtered_bin):
     fuz_factor = 2  # for error correction TODO: figure out why?
 
     return (filtered_bin[3] - (filtered_bin[3] % fuz_factor)) * 1e8 + (
-        filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e5 + (
-        filtered_bin[1] - (filtered_bin[1] % fuz_factor)) * 1e2 + (
-        filtered_bin[0] - (filtered_bin[0] % fuz_factor))
+            filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e5 + (
+                   filtered_bin[1] - (filtered_bin[1] % fuz_factor)) * 1e2 + (
+                   filtered_bin[0] - (filtered_bin[0] % fuz_factor))
 
 
 def hash_song(song_id, filtered_bins, hash_dictionary):
@@ -143,6 +144,10 @@ if __name__ == "__main__":
     #     print(keys)
     # for item in hash_dictionary.items():
     #     print(item)
+    # convert_to_wav("Songs/Dil Royi Jaye .mp3")
+    # convert_to_wav("Songs/Dil Da Pata.mp3")
+    # convert_to_wav("Songs/Chale Aana.mp3")
+    # convert_to_wav("Songs/Punjabi Song.mp3")
     create_database()
     filtered_bins_sample = song_recipe("Renai30s.wav")
     sample_dictionary = hash_sample(filtered_bins_sample)
