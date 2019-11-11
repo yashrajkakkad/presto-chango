@@ -24,9 +24,9 @@ def hash_window(filtered_bin):
     fuz_factor = 2  # for error correction TODO: figure out why?
 
     return (filtered_bin[3] - (filtered_bin[3] % fuz_factor)) * 1e8 + (
-            filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e5 + (
-                   filtered_bin[1] - (filtered_bin[1] % fuz_factor)) * 1e2 + (
-                   filtered_bin[0] - (filtered_bin[0] % fuz_factor))
+        filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e5 + (
+        filtered_bin[1] - (filtered_bin[1] % fuz_factor)) * 1e2 + (
+        filtered_bin[0] - (filtered_bin[0] % fuz_factor))
 
 
 def hash_song(song_id, filtered_bins, hash_dictionary):
@@ -94,14 +94,17 @@ def find_song(hash_dictionary, sample_dictionary, id_to_song):
         if hash_value_cur in hash_dictionary.keys():
             for item in hash_dictionary[hash_value_cur]:
                 song_id, offset = item
-                probability_song[song_id] += len(sample_dictionary[hash_value_cur])
+                probability_song[song_id] += len(
+                    sample_dictionary[hash_value_cur])
         # for hash_value, item in hash_dictionary:
         #     song_id, offset = item
         #     if hash_value == hash_value_cur:
         #         probability_song[song_id] += 1
     probable_song = None
     max_probability = 0
-    for song_id, probability in probability_song:
+    print(probability_song)
+    print(id_to_song)
+    for song_id, probability in probability_song.items():
         if probability > max_probability:
             max_probability = probability
             probable_song = song_id
@@ -132,11 +135,18 @@ def find_song(hash_dictionary, sample_dictionary, id_to_song):
 
 if __name__ == "__main__":
     # song_to_id, id_to_song, hash_dictionary = create_database()
+    # song_to_id, id_to_song, hash_dictionary = load_database()
+    # print(song_to_id)
+    # print(id_to_song)
+    # print(hash_dictionary)
+    # for keys in hash_dictionary.keys():
+    #     print(keys)
+    # for item in hash_dictionary.items():
+    #     print(item)
+    create_database()
+    filtered_bins_sample = song_recipe("Renai30s.wav")
+    sample_dictionary = hash_sample(filtered_bins_sample)
     song_to_id, id_to_song, hash_dictionary = load_database()
-    print(song_to_id)
-    print(id_to_song)
-    print(hash_dictionary)
-    for keys in hash_dictionary.keys():
-        print(keys)
-    for item in hash_dictionary.items():
-        print(item)
+    probable_song = find_song(hash_dictionary, sample_dictionary, id_to_song)
+    print("Final answer:")
+    print(id_to_song[probable_song])
