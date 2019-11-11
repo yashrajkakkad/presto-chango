@@ -1,6 +1,7 @@
 import os
 import random
 from Song import song_recipe
+import pickle
 
 
 # class DataPoint:
@@ -60,11 +61,24 @@ def create_database():
         id_to_song[song_id] = filename
         filtered_bins = song_recipe("Songs/" + filename)
         hash_song(song_id, filtered_bins, hash_dictionary)
+    with open('Songs.pickle', 'wb') as f:
+        pickle.dump(song_to_id, f)
+        pickle.dump(id_to_song, f)
+        pickle.dump(hash_dictionary, f)
+    return song_to_id, id_to_song, hash_dictionary
+
+
+def load_database():
+    with open('Songs.pickle', 'rb') as f:
+        song_to_id = pickle.load(f)
+        id_to_song = pickle.load(f)
+        hash_dictionary = pickle.load(f)
     return song_to_id, id_to_song, hash_dictionary
 
 
 if __name__ == "__main__":
-    song_to_id, id_to_song, hash_dictionary = create_database()
+    # song_to_id, id_to_song, hash_dictionary = create_database()
+    song_to_id, id_to_song, hash_dictionary = load_database()
     print(song_to_id)
     print(id_to_song)
     print(hash_dictionary)
