@@ -43,6 +43,16 @@ def hash_song(song_id, filtered_bins, hash_dictionary):
             hash_dictionary[hash_window(filtered_bin)] = [(song_id, i)]
 
 
+def hash_sample(filtered_bins):
+    sample_dictionary = {}
+    for i, filtered_bin in enumerate(filtered_bins):
+        try:
+            sample_dictionary[hash_window(filtered_bin)].append(i)
+        except KeyError:
+            sample_dictionary[hash_window(filtered_bin)] = [i]
+    return sample_dictionary
+
+
 def create_database():
     """
     :return: song_to_id - Maps song names to generated ids, id_to_song - Maps ids to song
@@ -74,6 +84,50 @@ def load_database():
         id_to_song = pickle.load(f)
         hash_dictionary = pickle.load(f)
     return song_to_id, id_to_song, hash_dictionary
+
+
+def find_song(hash_dictionary, sample_dictionary, id_to_song):
+    probability_song = {}
+    for song_id in id_to_song.keys():
+        probability_song[song_id] = 0
+    for hash_value_cur in sample_dictionary.keys():
+        if hash_value_cur in hash_dictionary.keys():
+            for item in hash_dictionary[hash_value_cur]:
+                song_id, offset = item
+                probability_song[song_id] += len(sample_dictionary[hash_value_cur])
+        # for hash_value, item in hash_dictionary:
+        #     song_id, offset = item
+        #     if hash_value == hash_value_cur:
+        #         probability_song[song_id] += 1
+    probable_song = None
+    max_probability = 0
+    for song_id, probability in probability_song:
+        if probability > max_probability:
+            max_probability = probability
+            probable_song = song_id
+    return probable_song
+    # relative_offsets = {}
+    # for song_id in id_to_song.keys():
+    #     relative_offsets[song_id] = {}
+    # for hash_value in hash_dictionary_cur.keys():
+    #     if hash_value in hash_dictionary.keys():
+    #         song_id, offset = hash_dictionary[hash_value]
+    #         song_offset = hash_dictionary_cur[hash_value]
+    #         try:
+    #             # hash_values = relative_offsets[song_id]
+    #             relative_offsets[song_id][hash_value][offset - song_offset] += 1
+    #         except KeyError:
+    #             relative_offsets[song_id][hash_value] = {}
+    #             relative_offsets[song_id][hash_value][offset - song_offset] = 1
+    #             # try:
+    #             #     offsets = relative_offsets[song_id][hash_value]
+    #             #     offsets[offset - song_offset] += 1
+    #             # except KeyError:
+    #
+    #             # relative_offets[song_id].append(offset - song_offset)
+    #         # except KeyError:
+    #         #     relative_offsets[song_id] = {}
+    #         #     relative_offsets[song_id][hash_value]
 
 
 if __name__ == "__main__":
