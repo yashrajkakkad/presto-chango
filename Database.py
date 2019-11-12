@@ -2,7 +2,7 @@ import os
 import random
 from Song import song_recipe
 import pickle
-from Song import convert_to_wav
+import scipy.io.wavfile as wavfile
 
 
 # class DataPoint:
@@ -22,6 +22,7 @@ def hash_window(filtered_bin):
     Fuzz factor analysis should be taken seriously, and in a real system,
     the program should have an option to set this parameter based on the conditions of the recording.
     """
+    # return hash((filtered_bin[0], filtered_bin[1], filtered_bin[2], filtered_bin[3]))
     fuz_factor = 2  # for error correction TODO: figure out why?
 
     return (filtered_bin[3] - (filtered_bin[3] % fuz_factor)) * 1e8 + (
@@ -88,28 +89,66 @@ def load_database():
 
 
 def find_song(hash_dictionary, sample_dictionary, id_to_song):
-    probability_song = {}
+    offset_dictionary = dict()
     for song_id in id_to_song.keys():
-        probability_song[song_id] = 0
-    for hash_value_cur in sample_dictionary.keys():
-        if hash_value_cur in hash_dictionary.keys():
-            for item in hash_dictionary[hash_value_cur]:
-                song_id, offset = item
-                probability_song[song_id] += len(
-                    sample_dictionary[hash_value_cur])
-        # for hash_value, item in hash_dictionary:
-        #     song_id, offset = item
-        #     if hash_value == hash_value_cur:
-        #         probability_song[song_id] += 1
-    probable_song = None
-    max_probability = 0
-    print(probability_song)
-    print(id_to_song)
-    for song_id, probability in probability_song.items():
-        if probability > max_probability:
-            max_probability = probability
-            probable_song = song_id
-    return probable_song
+        offset_dictionary[song_id] = {}
+    song_size = {}
+    for song_id in id_to_song.keys():
+        rate, data = wavfile.read("Songs/" + id_to_song[song_id])
+        song_size[song_id] = len(data) / rate
+    for sample_hash_value, sample_offsets in sample_dictionary.items():
+        for sample_offset in sample_offsets:
+            try:
+                for song_id, offset in hash_dictionary[sample_hash_value]:
+                    try:
+                        offset_dictionary[song_id][(offset - sample_offset) // 10] += 1
+                    except KeyError:
+                        offset_dictionary[song_id][(offset - sample_offset) // 10] = 1
+                    # try:
+                    #     hash_offset_dict = offset_dictionary[song_id][sample_hash_value]
+                    #     try:
+                    #         hash_offset_dict[(offset - sample_offset)%10] += 1
+                    #     except KeyError:
+                    #         hash_offset_dict[(offset - sample_offset)%10] = 1
+                    # except KeyError:
+                    #     offset_dictionary[song_id][sample_hash_value] = {}
+            except KeyError:
+                pass
+    max_frequency = 0
+    answer = None
+    for song_id, offset_dict in offset_dictionary.items():
+        for relative_set, frequency in offset_dict.items():
+            if frequency > max_frequency:
+                max_frequency = frequency
+                answer = song_id
+    # for song_id, hash_offset_dict in offset_dictionary.items():
+    #     for hash_value, relative_offset_dict in hash_offset_dict.items():
+    #         for relative_offset, frequency in relative_offset_dict.items():
+    #             if frequency > max_frequency:
+    #                 answer = song_id
+    return offset_dictionary, answer
+    # probability_song = {}
+    # for song_id in id_to_song.keys():
+    #     probability_song[song_id] = 0
+    # for hash_value_cur in sample_dictionary.keys():
+    #     if hash_value_cur in hash_dictionary.keys():
+    #         for item in hash_dictionary[hash_value_cur]:
+    #             song_id, offset = item
+    #             probability_song[song_id] += len(
+    #                 sample_dictionary[hash_value_cur])
+    # for hash_value, item in hash_dictionary:
+    #     song_id, offset = item
+    #     if hash_value == hash_value_cur:
+    #         probability_song[song_id] += 1
+    # probable_song = None
+    # max_probability = 0
+    # print(probability_song)
+    # print(id_to_song)
+    # for song_id, probability in probability_song.items():
+    #     if probability > max_probability:
+    #         max_probability = probability
+    #         probable_song = song_id
+    # return probable_song
     # relative_offsets = {}
     # for song_id in id_to_song.keys():
     #     relative_offsets[song_id] = {}
@@ -148,10 +187,16 @@ if __name__ == "__main__":
     # convert_to_wav("Songs/Dil Da Pata.mp3")
     # convert_to_wav("Songs/Chale Aana.mp3")
     # convert_to_wav("Songs/Punjabi Song.mp3")
-    create_database()
+    # create_database()
     filtered_bins_sample = song_recipe("Renai30s.wav")
     sample_dictionary = hash_sample(filtered_bins_sample)
     song_to_id, id_to_song, hash_dictionary = load_database()
-    probable_song = find_song(hash_dictionary, sample_dictionary, id_to_song)
-    print("Final answer:")
-    print(id_to_song[probable_song])
+    offset_dict, song_id = find_song(hash_dictionary, sample_dictionary, id_to_song)
+    print(offset_dict)
+    print(song_to_id)
+    print(id_to_song[song_id])
+    print(offset_dict[song_id])
+    print(offset_dict[song_to_id["RenaiCirculation.wav"]])
+    # probable_song = find_song(hash_dictionary, sample_dictionary, id_to_song)
+    # print("Final answer:")
+    # print(id_to_song[probable_song])
