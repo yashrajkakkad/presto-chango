@@ -1,3 +1,5 @@
+import os
+
 import scipy.io.wavfile as wavfile
 from scipy.signal import decimate, butter, filtfilt, spectrogram
 from scipy.signal.windows import hamming
@@ -38,13 +40,13 @@ def stereo_to_mono(audiodata):
     return audiodata.sum(axis=1) / 2
 
 
-def convert_to_wav(filename):
+def convert_to_wav(filename, dest_folder):
     song_title = filename.split('.')[0]
     song_format = filename.split('.')[1]
     # song_title, song_format = filename.split('.')[0:2]
     exported_song = song_title + '.wav'
     AudioSegment.from_file(filename, format=song_format).export(
-        exported_song, format="wav")
+        os.path.join(dest_folder, exported_song), format="wav")
     return exported_song
 
 
