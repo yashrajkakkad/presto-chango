@@ -3,7 +3,6 @@ import random
 from Song import song_recipe, convert_to_wav
 import pickle
 import scipy.io.wavfile as wavfile
-import os
 
 
 # class DataPoint:
@@ -206,7 +205,8 @@ if __name__ == "__main__":
     #                 print("GG")
     #                 for hash_dict_t in rec_t:
     #                     print(song_tuple[1]-hash_dict_t)
-
+    batch_convert_to_wav()
+    create_database()
     offset_dict, song_id = find_song(
         hash_dictionary, sample_dictionary, id_to_song)
     print(offset_dict)

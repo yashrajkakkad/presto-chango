@@ -31,7 +31,7 @@ def read_audio_file(filename):
         rate, data = wavfile.read(filename)
         return rate, data
     else:
-        converted_file = convert_to_wav(filename)
+        converted_file = convert_to_wav(filename, "")
         rate, data = wavfile.read(converted_file)
         return rate, data
 
@@ -41,13 +41,19 @@ def stereo_to_mono(audiodata):
 
 
 def convert_to_wav(filename, dest_folder):
-    song_title = filename.split('.')[0]
-    song_format = filename.split('.')[1]
+    try:
+        source_parent = os.path.dirname(filename)
+        filename = os.path.basename(filename)
+        song_title = filename.split('.')[0]
+        song_format = filename.split('.')[1]
+        exported_song = song_title + '.wav'
+        AudioSegment.from_file(os.path.join(source_parent, filename), format=song_format).export(
+            os.path.join(dest_folder, exported_song), format="wav")
+        return exported_song
+    except IndexError:
+        return None
+
     # song_title, song_format = filename.split('.')[0:2]
-    exported_song = song_title + '.wav'
-    AudioSegment.from_file(filename, format=song_format).export(
-        os.path.join(dest_folder, exported_song), format="wav")
-    return exported_song
 
 
 def butter_lowpass(cutoff, fs, order=5):
