@@ -3,5 +3,12 @@ venv
 .idea
 __pycache__
 Songs
+<<<<<<< HEAD
+Song_Samples
+=======
 MP3 Songs
+<<<<<<< HEAD
 MP3 S
+=======
+>>>>>>> origin/master
+>>>>>>> b7aa75bc80a84861ace500b18e1177c6badc412e
