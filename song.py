@@ -29,8 +29,6 @@ RANGES = [40, 80, 120, 180, UPPER_FREQ_LIMIT + 1]
 
 
 def read_audio_file(filename):
-<<<<<<< HEAD:song.py
-
     # OLD
     # if filename.split('.')[1] == 'wav':
     #     rate, data = wavfile.read(filename)
@@ -46,16 +44,14 @@ def read_audio_file(filename):
     #                      '-ar', str(DEFAULT_SAMPLING_RATE), os.path.join("Songs", filename)])
     #     rate, data = wavfile.read(os.path.join("Songs", filename))
     #     return rate, data
-    return rate, data
-=======
-    if filename.split('.')[1] == 'wav':
-        rate, data = wavfile.read(filename)
-        return rate, data
-    else:
-        converted_file = convert_to_wav(filename, "")
-        rate, data = wavfile.read(converted_file)
-        return rate, data
->>>>>>> origin/master:Song.py
+    # return rate, data
+    # if filename.split('.')[1] == 'wav':
+    #     rate, data = wavfile.read(filename)
+    #     return rate, data
+    # else:
+    #     converted_file = convert_to_wav(filename, "")
+    #     rate, data = wavfile.read(converted_file)
+    #     return rate, data
 
 
 def stereo_to_mono(audiodata):

@@ -55,6 +55,6 @@ def test():
 
 
 if __name__ == "__main__":
-    test()
-    # download_songs(
-    #     "https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj")
+    # test()
+    download_songs(
+        "https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj")
