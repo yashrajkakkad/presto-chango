@@ -1,3 +1,5 @@
+import os
+
 import scipy.io.wavfile as wavfile
 from scipy.signal import decimate, butter, filtfilt, spectrogram
 from scipy.signal.windows import hamming
@@ -27,6 +29,7 @@ RANGES = [40, 80, 120, 180, UPPER_FREQ_LIMIT + 1]
 
 
 def read_audio_file(filename):
+<<<<<<< HEAD:song.py
 
     # OLD
     # if filename.split('.')[1] == 'wav':
@@ -44,20 +47,35 @@ def read_audio_file(filename):
     #     rate, data = wavfile.read(os.path.join("Songs", filename))
     #     return rate, data
     return rate, data
+=======
+    if filename.split('.')[1] == 'wav':
+        rate, data = wavfile.read(filename)
+        return rate, data
+    else:
+        converted_file = convert_to_wav(filename, "")
+        rate, data = wavfile.read(converted_file)
+        return rate, data
+>>>>>>> origin/master:Song.py
 
 
 def stereo_to_mono(audiodata):
     return audiodata.sum(axis=1) / 2
 
 
-def convert_to_wav(filename):
-    song_title = filename.split('.')[0]
-    song_format = filename.split('.')[1]
+def convert_to_wav(filename, dest_folder):
+    try:
+        source_parent = os.path.dirname(filename)
+        filename = os.path.basename(filename)
+        song_title = filename.split('.')[0]
+        song_format = filename.split('.')[1]
+        exported_song = song_title + '.wav'
+        AudioSegment.from_file(os.path.join(source_parent, filename), format=song_format).export(
+            os.path.join(dest_folder, exported_song), format="wav")
+        return exported_song
+    except IndexError:
+        return None
+
     # song_title, song_format = filename.split('.')[0:2]
-    exported_song = song_title + '.wav'
-    AudioSegment.from_file(filename, format=song_format).export(
-        exported_song, format="wav")
-    return exported_song
 
 
 def butter_lowpass(cutoff, fs, order=5):
