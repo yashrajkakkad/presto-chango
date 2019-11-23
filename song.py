@@ -51,7 +51,7 @@ def read_audio_file(filename):
     # else:
     #     converted_file = convert_to_wav(filename, "")
     #     rate, data = wavfile.read(converted_file)
-    #     return rate, data
+    return rate, data
 
 
 def stereo_to_mono(audiodata):
