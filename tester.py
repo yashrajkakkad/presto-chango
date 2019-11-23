@@ -45,6 +45,7 @@ def test():
         offset_dict, song_id = find_song(
             hash_dict, sample_dict, id_to_song)
         print(id_to_song[song_id])
+        print(filename)
         if id_to_song[song_id] == filename:
             print("Success")
             hits += 1
@@ -55,6 +56,6 @@ def test():
 
 
 if __name__ == "__main__":
-    # test()
-    download_songs(
-        "https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj")
+    test()
+    # download_songs(
+    # "https://www.youtube.com/playlist?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj")

@@ -26,9 +26,9 @@ def hash_window(filtered_bin):
     fuz_factor = 2  # for error correction TODO: figure out why?
 
     return (filtered_bin[3] - (filtered_bin[3] % fuz_factor)) * 1e8 + (
-            filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e5 + (
-                   filtered_bin[1] - (filtered_bin[1] % fuz_factor)) * 1e2 + (
-                   filtered_bin[0] - (filtered_bin[0] % fuz_factor))
+        filtered_bin[2] - (filtered_bin[2] % fuz_factor)) * 1e5 + (
+        filtered_bin[1] - (filtered_bin[1] % fuz_factor)) * 1e2 + (
+        filtered_bin[0] - (filtered_bin[0] % fuz_factor))
 
 
 def hash_song(song_id, filtered_bins, hash_dictionary):
@@ -102,10 +102,10 @@ def find_song(hash_dictionary, sample_dictionary, id_to_song):
                 for song_id, offset in hash_dictionary[sample_hash_value]:
                     try:
                         offset_dictionary[song_id][(
-                                                           offset - sample_offset) // 1] += 1
+                            offset - sample_offset) // 10] += 1
                     except KeyError:
                         offset_dictionary[song_id][(
-                                                           offset - sample_offset) // 10] = 1
+                            offset - sample_offset) // 10] = 1
                     # try:
                     #     hash_offset_dict = offset_dictionary[song_id][sample_hash_value]
                     #     try:
