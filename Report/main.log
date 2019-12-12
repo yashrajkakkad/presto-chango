@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.12.11)  11 DEC 2019 18:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.12.11)  12 DEC 2019 14:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -369,62 +369,91 @@ Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 \c@blind@randommax=\count122
 \c@blind@pangramcount=\count123
 \c@blind@pangrammax=\count124
-) (/mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/main.aux)
-\openout1 = `main.aux'.
-
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 14.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 14.
- (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
-File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    ... okay on input line 14.
-
--- Lines per column: 50 (exact).
-(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count125
-\scratchdimen=\dimen137
-\scratchbox=\box31
-\nofMPsegments=\count126
-\nofMParguments=\count127
-\everyMPshowfont=\toks21
-\MPscratchCnt=\count128
-\MPscratchDim=\dimen138
-\MPnumerator=\count129
-\makeMPintoPDFobject=\count130
-\everyMPtoPDFconversion=\toks22
-) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
- (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
-) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
- (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+) (/home/yashrajkakkad/texmf/tex/latex/dirtytalk/dirtytalk.sty
+Package: dirtytalk 2010/11/21 A package making "quoting" easier
+ (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
  (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
-))) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
- (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
 Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
- (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+ (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
 Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
  (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
-)))) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+)))) (/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\c@dirtytalk@qdepth=\count125
+) (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2018/10/06 v3.3-154 Customizing captions (AR)
+ (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2018/09/12 v1.8c caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 64.
+\captionmargin=\dimen137
+\captionmargin@=\dimen138
+\captionwidth=\dimen139
+\caption@tempdima=\dimen140
+\caption@indent=\dimen141
+\caption@parindent=\dimen142
+\caption@hangindent=\dimen143
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+)
+
+Package caption Warning: Unsupported document class (or package) detected,
+(caption)                usage of the caption package is not recommended.
+See the caption package documentation for explanation.
+
+Package caption Info: \@makecaption = \long macro:#1#2->\ifx \@captype \@IEEEtablestring \footnotesize \bgroup \par \centering \@IEEEtabletopskipstrut {\normalfont \footnotesize #1}\\{\normalfont \footnotesize \scshape #2}\par \addvspace {0.5\baselineskip }\egroup \@IEEEtablecaptionsepspace \else \@IEEEfigurecaptionsepspace \setbox \@tempboxa \hbox {\normalfont \footnotesize {#1.}\nobreakspace \nobreakspace #2}\ifdim \wd \@tempboxa >\hsize \setbox \@tempboxa \hbox {\normalfont \footnotesize {#1.}\nobreakspace \nobreakspace }\parbox [t]{\hsize }{\normalfont \footnotesize \noindent \unhbox \@tempboxa #2}\else \ifCLASSOPTIONconference \hbox to\hsize {\normalfont \footnotesize \hfil \box \@tempboxa \hfil }\else \hbox to\hsize {\normalfont \footnotesize \box \@tempboxa \hfil }\fi \fi \fi .
+\c@caption@flags=\count126
+\c@ContinuedFloat=\count127
+) (/mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/main.aux)
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 15.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 15.
+
+-- Lines per column: 50 (exact).
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count128
+\scratchdimen=\dimen144
+\scratchbox=\box31
+\nofMPsegments=\count129
+\nofMParguments=\count130
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count131
+\MPscratchDim=\dimen145
+\MPnumerator=\count132
+\makeMPintoPDFobject=\count133
+\everyMPtoPDFconversion=\toks22
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+ (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+ (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+)) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2018/09/10 v0.29 Utility functions of pdfTeX for LuaTeX (HO)
  (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
@@ -440,36 +469,119 @@ Package grfext Info: Graphics extension search list:
 (grfext)             \AppendGraphicsExtensions on input line 456.
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
-)) (/mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/titlepage.tex [0
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+ (/mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/titlepage.tex
+<GroupPhoto.jpg, id=1, 4047.12pt x 3035.34pt>
+File: GroupPhoto.jpg Graphic file (type jpg)
+<use GroupPhoto.jpg>
+Package pdftex.def Info: GroupPhoto.jpg  used on input line 23.
+(pdftex.def)             Requested size: 309.60315pt x 232.1796pt.
+ [0
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
-LaTeX Font Info:    Try loading font information for U+msa on input line 44.
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/GroupPhoto.jpg>])
+<Flowchart.PNG, id=10, 237.88875pt x 419.76825pt>
+File: Flowchart.PNG Graphic file (type png)
+<use Flowchart.PNG>
+Package pdftex.def Info: Flowchart.PNG  used on input line 44.
+(pdftex.def)             Requested size: 237.88815pt x 419.76721pt.
+LaTeX Font Info:    Try loading font information for U+msa on input line 49.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 44.
+LaTeX Font Info:    Try loading font information for U+msb on input line 49.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \vbox (badness 3354) has occurred while \output is active []
+<lowpassfilter.png, id=12, 358.33875pt x 272.81924pt>
+File: lowpassfilter.png Graphic file (type png)
+<use lowpassfilter.png>
+Package pdftex.def Info: lowpassfilter.png  used on input line 59.
+(pdftex.def)             Requested size: 258.0pt x 196.43802pt.
 
- [1
+Overfull \hbox (6.0pt too wide) in paragraph at lines 59--61
+[][] 
+ []
+
+[1
+
+ </mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/Flowchart.PNG> </mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/lowpassfilter.png (PNG copy)>]
+<hamming.png, id=20, 462.528pt x 346.896pt>
+File: hamming.png Graphic file (type png)
+<use hamming.png>
+Package pdftex.def Info: hamming.png  used on input line 93.
+(pdftex.def)             Requested size: 232.19843pt x 174.15157pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<ActualSong.png, id=21, 920.238pt x 495.0495pt>
+File: ActualSong.png Graphic file (type png)
+<use ActualSong.png>
+Package pdftex.def Info: ActualSong.png  used on input line 110.
+(pdftex.def)             Requested size: 191.82343pt x 103.19296pt.
+<BirdsChirping.png, id=22, 674.2791pt x 676.4472pt>
+File: BirdsChirping.png Graphic file (type png)
+<use BirdsChirping.png>
+Package pdftex.def Info: BirdsChirping.png  used on input line 117.
+(pdftex.def)             Requested size: 205.73198pt x 206.39351pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2 </mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/Hamming.png> </mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/ActualSong.png (PNG copy)>]
+<matching.png, id=31, 451.6875pt x 264.23718pt>
+File: matching.png Graphic file (type png)
+<use matching.png>
+Package pdftex.def Info: matching.png  used on input line 159.
+(pdftex.def)             Requested size: 258.0pt x 150.9393pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 159--160
+ [] 
+ []
+
+[3 </mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/BirdsChirping.png> </mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/matching.png>]
+<Plot_CT.png, id=36, 678.6153pt x 686.565pt>
+File: Plot_CT.png Graphic file (type png)
+<use Plot_CT.png>
+Package pdftex.def Info: Plot_CT.png  used on input line 185.
+(pdftex.def)             Requested size: 245.10315pt x 247.96986pt.
+<Cheap_Thrills.png, id=37, 1336.995pt x 709.6914pt>
+File: Cheap_Thrills.png Graphic file (type png)
+<use Cheap_Thrills.png>
+Package pdftex.def Info: Cheap_Thrills.png  used on input line 193.
+(pdftex.def)             Requested size: 245.0961pt x 245.10368pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[4 </mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/Plot_CT.png> </mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/Cheap_Thrills.png>]
+/mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/main.tex:206: Undefined control sequence.
+l.206 \inputminted
+                  {python}{song.py}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[5
 
 ] (/mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/main.aux) ) 
 Here is how much of TeX's memory you used:
- 4310 strings out of 494485
- 63525 string characters out of 6175791
- 130255 words of memory out of 5000000
- 7918 multiletter control sequences out of 15000+600000
- 34449 words of font info for 75 fonts, out of 8000000 for 9000
+ 5530 strings out of 494485
+ 85243 string characters out of 6175791
+ 154497 words of memory out of 5000000
+ 9111 multiletter control sequences out of 15000+600000
+ 36692 words of font info for 77 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 41i,8n,35p,470b,141s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,8n,39p,587b,393s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on "/mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/main.pdf" (2 pages, 95116 bytes).
+Output written on "/mnt/DATA/SEAS/Semester 3/SS/presto-chango/Report/main.pdf" (6 pages, 5574716 bytes).
 PDF statistics:
- 52 PDF objects out of 1000 (max. 8388607)
- 37 compressed objects within 1 object stream
+ 79 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
 
