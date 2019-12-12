@@ -1,5 +1,3 @@
-import os
-
 import scipy.io.wavfile as wavfile
 from scipy.signal import decimate, butter, filtfilt, spectrogram
 from scipy.signal.windows import hamming
@@ -22,35 +20,15 @@ import wave  # To writeback the recorded samples as .wav files.
 DEFAULT_SAMPLING_RATE = 44100
 SAMPLING_RATE = 11025
 CUTOFF_FREQUENCY = 5000
-SAMPLES_PER_WINDOW = 1024
+SAMPLES_PER_WINDOW = 4096
 TIME_RESOLUTION = SAMPLES_PER_WINDOW / SAMPLING_RATE
-UPPER_FREQ_LIMIT = 300
+UPPER_FREQ_LIMIT = 600
+# Frequency ranges for hashing
 RANGES = [40, 80, 120, 180, UPPER_FREQ_LIMIT + 1]
 
 
 def read_audio_file(filename):
-    # OLD
-    # if filename.split('.')[1] == 'wav':
-    #     rate, data = wavfile.read(filename)
-    #     return rate, data
-    # else:
-    #     converted_file = convert_to_wav(filename)
-    #     rate, data = wavfile.read(converted_file)
-    #     return rate, data
-
     rate, data = wavfile.read(filename)
-    # if rate != 44100:
-    #     subprocess.call(['ffmpeg', '-i', '-y', os.path.join("Songs_dl", filename),
-    #                      '-ar', str(DEFAULT_SAMPLING_RATE), os.path.join("Songs", filename)])
-    #     rate, data = wavfile.read(os.path.join("Songs", filename))
-    #     return rate, data
-    # return rate, data
-    # if filename.split('.')[1] == 'wav':
-    #     rate, data = wavfile.read(filename)
-    #     return rate, data
-    # else:
-    #     converted_file = convert_to_wav(filename, "")
-    #     rate, data = wavfile.read(converted_file)
     return rate, data
 
 
@@ -59,6 +37,9 @@ def stereo_to_mono(audiodata):
 
 
 def convert_to_wav(filename, dest_folder):
+    """
+    Converts any audio format to wav supported by FFMPEG
+    """
     try:
         source_parent = os.path.dirname(filename)
         filename = os.path.basename(filename)
@@ -71,10 +52,14 @@ def convert_to_wav(filename, dest_folder):
     except IndexError:
         return None
 
-    # song_title, song_format = filename.split('.')[0:2]
-
 
 def butter_lowpass(cutoff, fs, order=5):
+    """
+    :param cutoff:
+    :param fs:
+    :param order:
+    :return: b, a - Filter coefficients
+    """
     nyq = 0.5 * fs
     normal_cutoff = cutoff / nyq
     b, a = butter(order, normal_cutoff, btype='low', analog=False)
@@ -82,14 +67,19 @@ def butter_lowpass(cutoff, fs, order=5):
 
 
 def butter_lowpass_filter(data, cutoff, fs, order=5):
+    """
+    :param data:
+    :param cutoff:
+    :param fs:
+    :param order:
+    :return: Filtered data
+    """
     b, a = butter_lowpass(cutoff, fs, order=order)
     y = filtfilt(b, a, data)
     return y
 
 
 def downsample_signal(data, factor):
-    # downsampled_data = decimate(data, factor)
-    # return downsampled_data
     return decimate(data, factor)
 
 
@@ -101,32 +91,30 @@ def apply_window_function(data, window_size, window_function):
 
 
 def fft_demo(data, window_size, window_function):
-    # fft_data = fft(data[:window_size]*window_function)
-    # fft_data = np.multiply(fft(data[:window_size]), window_function)
-    # # plt.plot(fft_data)
-    # fft_freq = np.fft.fftfreq(window_size//2)
-    # power = np.abs(fft_data[:window_size//2])
-    # plt.subplot(2, 1, 1)
-    # # plt.plot(, power)
-    # plt.plot(np.abs(fft_freq)*sampling_rate,
-    #          np.abs(fft_data)[:window_size//2])
-    # plt.subplot(2, 1, 2)
-    # plt.plot(power)
-    # plt.show()
     fft_data = fft(data[:window_size] * window_function)
     freq = fftfreq(len(fft_data), 1 / SAMPLING_RATE)
     return np.abs(fft_data[:window_size // 2]), freq
 
 
-# FFT on a single window
 def fft_one_window(window, window_size):
+    """
+    FFT on a single window
+    :param window:
+    :param window_size:
+    :return: FFT of the window
+    """
     fft_data = fft(window)
     freq = fftfreq(len(fft_data), 1 / SAMPLING_RATE)
     return np.abs(fft_data)[:window_size // 2], freq[:window_size // 2]
 
 
-# Plot unfiltered spectrogram
 def plot_spectrogram(data, window_size, sampling_rate):
+    """
+    Plot unfiltered spectrogram
+    :param data:
+    :param window_size:
+    :param sampling_rate:
+    """
     freq, time, Spectrogram = spectrogram(data, fs=sampling_rate,
                                           window='hamming', nperseg=window_size,
                                           noverlap=window_size - 100, detrend=False,
@@ -139,14 +127,13 @@ def plot_spectrogram(data, window_size, sampling_rate):
     plt.show()
 
 
-# Filter spectrogram data
 def filter_spectrogram(windows, window_size):
-    # OLD CODE
-    # spectrum = np.fft.fft(windows, axis=0)[:window_size // 2 + 1:-1]
-    # spectrum = np.abs(spectrum)
-    # freqs = np.fft.fftfreq(window_size // 2)
-    # plt.plot(freqs, spectrum)
-
+    """
+    Filters spectrogram data
+    :param windows:
+    :param window_size:
+    :return: filtered_bins
+    """
     # Init 2D list
     filtered_bins = [[0 for i in range(len(RANGES))] for j in range(
         len(windows))]  # rows = no. of windows, cols = no. of bands
@@ -176,16 +163,23 @@ def filter_spectrogram(windows, window_size):
     return filtered_bins
 
 
-# Returns band index for a given freq_value
 def return_freq_range_index(freq_value):
+    """
+    Returns band index for a given freq_value
+    :param freq_value:
+    :return: freq_range_index
+    """
     freq_range_index = 0
     while freq_value > RANGES[freq_range_index]:
         freq_range_index = freq_range_index + 1
     return freq_range_index
 
 
-# Plot filtered spectrogram
 def plot_filtered_spectrogram(filtered_data):
+    """
+    Plot filtered spectrogram
+    :param filtered_data:
+    """
     for window_index in range(len(filtered_data)):
         """
         The function np.array generates a numpy array
@@ -213,6 +207,11 @@ def plot_filtered_spectrogram(filtered_data):
 
 
 def song_recipe(filename):
+    """
+    Run the entire algorithm on a particular song
+    :param filename:
+    :return filtered_spectrogram_data:
+    """
     rate, audio_data = read_audio_file(filename)
     if audio_data.ndim != 1:  # Checks no. of channels. Some samples are already mono
         audio_data = stereo_to_mono(audio_data)
@@ -225,59 +224,3 @@ def song_recipe(filename):
         decimated_data, SAMPLES_PER_WINDOW, hamming_window)
     filtered_spectrogram_data = filter_spectrogram(windows, SAMPLES_PER_WINDOW)
     return filtered_spectrogram_data
-    # plot_filtered_spectrogram(filtered_spectrogram_data)
-
-
-if __name__ == "__main__":
-    # Read the audio file
-    # filename = 'Songs/RenaiCirculation.wav'
-    #
-    # filtered_spectrogram_data = song_recipe(filename)
-    # plot_filtered_spectrogram(filtered_spectrogram_data)
-
-    # record_sample_recipe('output.wav',30)
-    # filtered_spectrogram_data = song_recipe('output.wav')
-    # plot_filtered_spectrogram(filtered_spectrogram_data)
-
-    # playback_recorded_sample('output.wav')
-
-    # Convert stereo to mono, if required
-    # if audio_data.ndim != 1:  # Checks no. of channels. Some samples are already mono
-    #     audio_data = stereo_to_mono(audio_data)
-    # # print(audio_data)
-
-    # Pass the signal to a low-pass filter with a cutoff frequency of 5000 Hz
-    # filtered_data = butter_lowpass_filter(audio_data, CUTOFF_FREQUENCY, DEFAULT_SAMPLING_RATE)
-
-    # Decimate by a factor of 4
-    # decimated_data = downsample_signal(filtered_data, DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
-    # print(DEFAULT_SAMPLING_RATE // SAMPLING_RATE)
-    # print(decimated_data)
-    # first_len = len(filtered_data)
-    # second_len = len(decimated_data)
-    # print(first_len, second_len)
-    # assert (first_len / 4 == second_len)
-
-    # plot_spectrogram(decimated_data, SAMPLES_PER_WINDOW, SAMPLING_RATE)
-
-    # Generate a hamming window function
-    # sym=False since we're going for spectral analysis
-    # hamming_window = hamming(SAMPLES_PER_WINDOW, sym=False)
-    # print(hamming_window)
-    # plt.plot(hamming_window)
-    # plt.ylabel("Hamming Window baby!")
-    # plt.show()
-
-    # windows = apply_window_function(decimated_data, SAMPLES_PER_WINDOW, hamming_window)
-    # print(type(windows))
-    # print(windows)
-    # print(len(decimated_data))
-    # print(len(windows))
-
-    # FFT on a single window
-    # fft_data, freq = fft_demo(decimated_data, SAMPLES_PER_WINDOW, hamming_window, SAMPLING_RATE)
-    # plt.plot(freq, np.abs(fft_data))
-    # plt.xlabel("Frequency [Hz]", fontsize=22)
-    # plt.ylabel("|X(w)|", fontsize=22)
-    # plt.show()
-    print("GG")

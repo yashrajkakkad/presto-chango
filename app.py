@@ -1,12 +1,17 @@
 import pyaudio
 import wave
-from song import song_recipe
-from database import hash_sample, load_database, find_song
+from song import song_recipe, plot_filtered_spectrogram
+from database import hash_sample, load_database, find_song, create_database
+import operator
 
 SAMPLE_DURATION = 30
 
 
 def record_sample_recipe(filename="sample.wav"):
+    """
+    Record a song
+    :param filename:
+    """
     chunk = 1024  # Record in chunks of 1024 samples
     sample_format = pyaudio.paInt16  # 16 bits per sample
     channels = 1
@@ -44,6 +49,10 @@ def record_sample_recipe(filename="sample.wav"):
 
 
 def playback_recorded_sample(filename="sample.wav"):
+    """
+    Playback recorded song
+    :param filename:
+    """
     chunk = 1024  # Set chunk size of 1024 samples per data frame
 
     wf = wave.open(filename, 'rb')  # Open the sound file
@@ -70,15 +79,38 @@ def playback_recorded_sample(filename="sample.wav"):
 
 
 if __name__ == "__main__":
-    print("Recording started")
-    record_sample_recipe()
-    print("Recording finished")
-    filtered_bins_sample = song_recipe("sample.wav")
-    sample_dict = hash_sample(filtered_bins_sample)
+    # create_database()
+    print("Music identification with audio fingerprinting")
+    print("Loading database")
+    print(".\n.\n.")
     song_to_id, id_to_song, hash_dict = load_database()
-    offset_dict, song_id = find_song(
-        hash_dict, sample_dict, id_to_song)
-    print(song_id)
-    print(id_to_song)
-    print(id_to_song[song_id])
-    playback_recorded_sample()
+    print("Database loaded")
+    print("\nWelcome!")
+    while True:
+        # print("Recording started")
+        # record_sample_recipe()
+        # print("Recording finished")
+        print("Enter file name: ")
+        filename = input()
+        filtered_bins_sample = song_recipe(filename)  # Run our algorithm on the song
+        # plot_filtered_spectrogram(filtered_bins_sample)
+
+        sample_dict = hash_sample(filtered_bins_sample)
+        max_frequencies, max_frequencies_keys = find_song(
+            hash_dict, sample_dict, id_to_song)
+        count = 0
+        for song_id in max_frequencies_keys:
+            print(id_to_song[song_id], max_frequencies[song_id])
+            count += 1
+            if count == 5:
+                break
+        # print(song_id)
+        # print(id_to_song)
+        # print(offset_dict)
+        # print(id_to_song[song_id])
+        # print(sorted(offset_dict.items(), key=operator.itemgetter(1)))
+        # playback_recorded_sample()
+        print("Would you like to test another? 1/0")
+        choice = int(input())
+        if not choice:
+            break
