@@ -4,7 +4,9 @@ Identifies a song from a small recording (say 30 seconds). The song has to be a 
 This project is essentially a simplified version of what Shazam does.
 ## The Idea
 The below flowchart describes the series of steps:
+
 ![Flowchart](https://github.com/yashrajkakkad/presto-chango/blob/master/Report/Flowchart.PNG?raw=true)
+
 Below is a brief summary. For detailed explanation with analysis, check out our [Report](https://github.com/yashrajkakkad/presto-chango/blob/master/Report/main.pdf).
 
 We decimate the audio signal by a factor of 4 after passing it through a low pass filter (to smartly avoid [aliasing](https://en.wikipedia.org/wiki/Aliasing)). Thereafter, the signal is converted to frequency domain using the famous Fast Fourier Transform.
