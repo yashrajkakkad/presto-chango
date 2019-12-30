@@ -3,9 +3,9 @@ Identifies a song from a small recording (say 30 seconds). The song has to be a 
 
 This project is essentially a simplified version of what Shazam does.
 ## The Idea
-The below flowchart describes the series of steps:
+The flowchart on the right describes the series of steps.
+<img src="https://github.com/yashrajkakkad/presto-chango/blob/master/flowchart.png?raw=true" align="right" height="500">
 
-![Flowchart](https://github.com/yashrajkakkad/presto-chango/blob/master/flowchart.png?raw=true)
 
 Below is a brief summary. For detailed explanation with analysis, check out our [Report](https://drive.google.com/open?id=1xbEC75FN3AIidWBd8bckgi4QeNJDdN-b).
 
