@@ -14,7 +14,7 @@ setup(
     url='https://github.com/yashrajkakkad/presto-chango',
     packages=find_packages(),
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
