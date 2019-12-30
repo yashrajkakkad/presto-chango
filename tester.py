@@ -73,6 +73,7 @@ def test():
     print((hits / total) * 100, " %")
 
 
+test()
 """
 download_songs(
 "https://www.youtube.com/playlist?
