@@ -1,4 +1,8 @@
 # Music Identification Through Audio Fingerprinting
+<a href="https://pypi.org/project/Presto-Chango/"><img alt="PyPI" src="https://img.shields.io/pypi/v/Presto-Chango"></a>
+<img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/Presto-Chango">
+<img alt="PyPI - License" src="https://img.shields.io/pypi/l/Presto-Chango">
+<br>
 Identifies a song from a small recording (say 30 seconds). The song has to be a part of your created database, of course.
 
 This project is essentially a simplified version of what Shazam does.
