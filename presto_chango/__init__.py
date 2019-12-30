@@ -4,7 +4,7 @@ from presto_chango.database import create_database
 from presto_chango.app import identify_song
 
 
-@click.group(help='Music identification using audio fingerprinting')
+@click.group(help='Music identification through audio fingerprinting')
 def cli():
     pass
 
