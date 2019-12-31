@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='Presto Chango',
-    version='1.0.1',
+    version='1.0.2',
     author='Prayag Savsani',
     author_email='prayag.s@ahduni.edu.in',
     description='Music identification through audio fingerprinting',
@@ -22,7 +22,7 @@ setup(
         'Topic :: Multimedia :: Sound/Audio :: Analysis'
     ],
     install_requires=[
-        'Click', 'scipy', 'numpy', 'scikit-image', 'matplotlib', 'pydub', 'pyaudio'
+        'Click', 'scipy', 'numpy', 'scikit-image', 'matplotlib', 'pydub', 'pyaudio', 'appdirs'
     ],
     entry_points={
         'console_scripts': [
