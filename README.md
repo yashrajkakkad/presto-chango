@@ -28,7 +28,7 @@ We perform similar steps for the recorded sample. The answer is the song with th
 ## Installation
 - Install using pip (preferred in a virtual environment).
 ```sh
-pip install Presto-Chango
+pip install -U Presto-Chango
 ```
 
 ## Usage
