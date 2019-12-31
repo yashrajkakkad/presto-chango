@@ -3,6 +3,7 @@ import random
 from presto_chango.song import song_recipe, convert_to_wav
 import pickle
 import scipy.io.wavfile as wavfile
+from appdirs import AppDirs
 
 
 def hash_window(filtered_bin):
@@ -57,10 +58,10 @@ def create_database(song_dir):
     :return: song_to_id - Maps song names to generated ids, id_to_song - Maps ids to song
     hash_dictionary - Maps hash values to associated song ids and offset values
     """
-    if os.path.exists('Songs'):
+    if os.path.exists(os.path.join(AppDirs('Presto-Chango').user_data_dir, 'Songs')):
         pass
     else:
-        os.mkdir('Songs')
+        os.mkdir(os.path.join(AppDirs('Presto-Chango').user_data_dir, 'Songs'))
     song_to_id = {}
     id_to_song = {}
     hash_dictionary = {}
@@ -71,7 +72,7 @@ def create_database(song_dir):
         id_to_song[song_id] = filename
         filtered_bins = song_recipe(os.path.join(song_dir, filename))
         hash_song(song_id, filtered_bins, hash_dictionary)
-    with open('Songs.pickle', 'wb') as f:  # Object serialization
+    with open(os.path.join(AppDirs('Presto-Chango').user_data_dir, 'Songs.pickle'), 'wb') as f:  # Object serialization
         pickle.dump(song_to_id, f)
         pickle.dump(id_to_song, f)
         pickle.dump(hash_dictionary, f)
@@ -84,7 +85,7 @@ def load_database():
     Load data stored in a serialized file
     :return song_to_id, id_to_song, hash_dictionary:
     """
-    with open('Songs.pickle', 'rb') as f:  # Load data from a binary file
+    with open(os.path.join(AppDirs('Presto-Chango').user_data_dir, 'Songs.pickle'), 'rb') as f:  # Load data from a binary file
         song_to_id = pickle.load(f)
         id_to_song = pickle.load(f)
         hash_dictionary = pickle.load(f)
@@ -104,7 +105,8 @@ def find_song(hash_dictionary, sample_dictionary, id_to_song):
         offset_dictionary[song_id] = {}
     song_size = {}
     for song_id in id_to_song.keys():
-        rate, data = wavfile.read(os.path.join("Songs", id_to_song[song_id]))
+        rate, data = wavfile.read(os.path.join(os.path.join(
+            AppDirs('Presto-Chango').user_data_dir, 'Songs'), id_to_song[song_id]))
         song_size[song_id] = len(data) / rate
     for sample_hash_value, sample_offsets in sample_dictionary.items():
         for sample_offset in sample_offsets:

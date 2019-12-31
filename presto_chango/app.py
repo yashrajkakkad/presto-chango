@@ -4,11 +4,12 @@ from presto_chango.song import song_recipe, plot_filtered_spectrogram
 from presto_chango.database import hash_sample, load_database, find_song, create_database
 import operator
 import os
+from appdirs import AppDirs
 
 SAMPLE_DURATION = 30
 
 
-def record_sample_recipe(filename="sample.wav"):
+def record_sample_recipe(filename=os.path.join(AppDirs('Presto-Chango').user_data_dir, 'sample.wav')):
     """
     Record a song
     :param filename:
@@ -49,7 +50,7 @@ def record_sample_recipe(filename="sample.wav"):
     wf.close()
 
 
-def playback_recorded_sample(filename="sample.wav"):
+def playback_recorded_sample(filename=os.path.join(AppDirs('Presto-Chango').user_data_dir, 'sample.wav')):
     """
     Playback recorded song
     :param filename:
@@ -80,7 +81,7 @@ def playback_recorded_sample(filename="sample.wav"):
 
 
 def identify_song(filename):
-    if os.path.exists('Songs.pickle'):
+    if os.path.exists(os.path.join(AppDirs('Presto-Chango').user_data_dir, 'Songs.pickle')):
         pass
     else:
         print('Database has not been created. Please do so by running \'presto-chango create-db\'')

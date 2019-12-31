@@ -9,6 +9,7 @@ from pydub import AudioSegment  # convert mp3 to wav
 import subprocess
 import os
 from shutil import copyfile
+from appdirs import AppDirs
 
 import pyaudio  # To record and playback audio.
 # NOTE: Linux users should install PortAudio from their respective distro repos
@@ -33,7 +34,8 @@ def read_audio_file(filename):
     if file_extension != '.wav':
         filename = convert_to_wav(filename)
     else:
-        copyfile(filename, os.path.join('Songs', os.path.basename(filename)))
+        copyfile(filename, os.path.join(os.path.join(
+            AppDirs('Presto-Chango').user_data_dir, 'Songs'), os.path.basename(filename)))
     rate, data = wavfile.read(filename)
     return rate, data
 
@@ -58,9 +60,9 @@ def convert_to_wav(filename):
         original_song = original_song.set_channels(1)
         original_song = original_song.set_frame_rate(44100)
         exported_song = original_song.export(os.path.join(
-            'Songs', exported_song_title), format="wav")
+            os.path.join(AppDirs('Presto-Chango').user_data_dir, 'Songs'), exported_song_title), format="wav")
         return os.path.join(
-            'Songs', exported_song_title)
+            os.path.join(AppDirs('Presto-Chango').user_data_dir, 'Songs'), exported_song_title)
     except IndexError:
         return None
 

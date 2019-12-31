@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='Presto Chango',
-    version='1.0',
+    version='1.0.1',
     author='Prayag Savsani',
     author_email='prayag.s@ahduni.edu.in',
     description='Music identification through audio fingerprinting',
@@ -18,7 +18,7 @@ setup(
         'Environment :: Console',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3',
         'Topic :: Multimedia :: Sound/Audio :: Analysis'
     ],
     install_requires=[

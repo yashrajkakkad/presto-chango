@@ -52,7 +52,7 @@ def hash_random_sample(filename):
     return sample_dict
 
 
-def test():
+def test_accuracy():
     """
     Test the code with random samples
     :return:
